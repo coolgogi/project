@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "335189613913",
+    "project_id": "multi-platform-86b39",
+    "storage_bucket": "multi-platform-86b39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335189613913:android:a01acf9462c34070ee0048",
+        "android_client_info": {
+          "package_name": "com.example.friendlyeats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335189613913-8984elcgl6t1dug69k51qkgamm4qgtpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoJob4rAi2TDluWCqKbkF1EHs7S8kBXUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335189613913-8984elcgl6t1dug69k51qkgamm4qgtpb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "335189613913-ehobrnjhh9qbviimq2rt282ghmv942co.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.winter.vacation"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

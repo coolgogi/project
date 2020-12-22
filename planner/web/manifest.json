@@ -1,11 +1,11 @@
 {
-    "name": "planner",
-    "short_name": "planner",
+    "name": "friendlyeats",
+    "short_name": "friendlyeats",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "planner for advanced flutter camp",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
