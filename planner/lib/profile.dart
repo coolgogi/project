@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'login.dart';
 import 'constants.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-
+import 'item_horizontallist.dart';
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -56,12 +56,13 @@ class _ProfileState extends State<Profile> {
             Text('매너온도',style: TextStyle(fontSize: 18)),
             SizedBox(height: 10,),
             // 사용자 평가 바
- StepProgressIndicator(
-                  totalSteps: 10,
-                  currentStep: 6,
-                  selectedColor: Colors.blue,
-                  unselectedColor: Colors.black,
-                ),
+            StepProgressIndicator(
+              totalSteps: 10,
+              currentStep: 6,
+              selectedColor: Colors.blue,
+              unselectedColor: Colors.black,
+            ),
+            HorizontalList(),
           ],
         ),
       ),

@@ -24,16 +24,18 @@ environment:
 dependencies:
   firebase_core: ^0.5.0
   firebase_auth: ^0.18.0+1
-  cloud_firestore: ^0.14.0+2
-  firebase_storage: "^5.0.1"
+  cloud_firestore: ^0.14.4
+  firebase_storage: ^5.0.1
   responsive_grid: ^1.2.1+1
   smooth_star_rating: ^1.1.1
   sliver_fab: ^1.0.0
-  google_sign_in: "^4.5.1"
+  google_sign_in: ^4.5.1
   cupertino_icons: ^0.1.0
   image_picker: ^0.6.7+14
   shrine_images: 1.1.1
   step_progress_indicator: ^0.2.5+8
+  flutter_signin_button: ^1.0.0
+
 
   flutter:
     sdk: flutter
@@ -59,7 +61,7 @@ flutter:
   assets:
     - assets/diamond.png
     - assets/friendlyeater.png
-    - assets/camera.png
+    - assets/diary.png
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

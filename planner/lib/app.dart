@@ -15,16 +15,26 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'login.dart';
+import 'add.dart';
+import 'profile.dart';
 
 // TODO: Convert ShrineApp to stateful widget (104)
 class ShrineApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Shrine',
       home: HomePage(),
       initialRoute: '/login',
+      routes: {
+        '/home' : (context) => HomePage(),
+        '/add' : (context) => AddProduct(),
+        '/login' : (context) =>LoginPage(),
+        '/profile' : (context) =>Profile(),
+
+      },
       onGenerateRoute: _getRoute,
       // TODO: Add a theme (103)
     );
@@ -40,6 +50,7 @@ class ShrineApp extends StatelessWidget {
       fullscreenDialog: true,
     );
   }
+
 }
 
 // TODO: Build a Shrine Theme (103)
