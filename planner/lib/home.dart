@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:friendlyeats/profile.dart';
+import 'package:friendlyeats/chatList.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -115,17 +117,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('SHRINE1'),
         leading: IconButton(
-          icon: Icon(
-            Icons.person,
-            semanticLabel: 'profile',
-          ),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => Profile(),
+            icon: Icon(
+              Icons.person,
+              semanticLabel: 'profile',
             ),
-          )
-        ),
+            onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Profile(),
+                  ),
+                )),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -139,6 +140,16 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
+          IconButton(
+              icon: Icon(
+                Icons.account_box,
+              ),
+              onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => chatList(),
+                    ),
+                  ))
         ],
       ),
       body: _buildBody(context),
