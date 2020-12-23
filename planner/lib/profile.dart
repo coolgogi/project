@@ -30,7 +30,7 @@ class _ProfileState extends State<Profile> {
     leading: IconButton(
     padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
     icon: Icon(Icons.arrow_back),
-    onPressed: () => Navigator.pop(context),
+    onPressed: () => Navigator.pushNamed(context, '/home'),
     ),
     actions: <Widget>[
     IconButton(

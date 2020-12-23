@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 import 'login.dart';
 import 'add.dart';
+import 'profile.dart';
+
 
 // TODO: Convert ShrineApp to stateful widget (104)
 class ShrineApp extends StatelessWidget {
@@ -30,6 +32,12 @@ class ShrineApp extends StatelessWidget {
         '/home' : (context) => HomePage(),
         '/add' : (context) => AddProduct(),
         '/login' : (context) =>LoginPage(),
+
+        '/profile' : (context) =>Profile(),
+
+
+
+
       },
       onGenerateRoute: _getRoute,
       // TODO: Add a theme (103)
