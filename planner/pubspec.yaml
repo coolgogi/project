@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^0.1.0
   image_picker: ^0.6.7+14
   shrine_images: 1.1.1
+  flutter_signin_button: ^1.0.0
 
 
   flutter:
@@ -59,6 +60,7 @@ flutter:
   assets:
     - assets/diamond.png
     - assets/friendlyeater.png
+    - assets/diary.png
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
