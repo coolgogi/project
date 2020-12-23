@@ -1,93 +1,98 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:h_safari/helpers/firebase_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-// import 'package:provider/provider.dart';
-// import '../../services/database.dart';
 
+// ignore: must_be_immutable
 class chatRoom extends StatefulWidget {
-  final String chatRoomId;
-  final String chatRoomName;
-
-  chatRoom({this.chatRoomId, this.chatRoomName});
+  // final String chatRoomId;
+  String docsName;
+  String fullName;
+  chatRoom(String tp, String tp2) {
+    docsName = tp;
+    fullName = tp2;
+  }
 
   @override
-  _chatRoomState createState() => _chatRoomState();
+  _chatRoomState createState() => _chatRoomState(docsName, fullName);
 }
 
 class _chatRoomState extends State<chatRoom> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  String docsName;
+  String fullName;
   Stream<QuerySnapshot> chats;
-  TextEditingController messageEditingController = new TextEditingController();
+
+  _chatRoomState(String tp, String tp2) {
+    docsName = tp;
+    fullName = tp2;
+  }
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  Stream documentStream =
+      FirebaseFirestore.instance.collection('chatRoom').doc().snapshots();
+  TextEditingController messageEditingController = TextEditingController();
   String previousDate;
-  var _blankFocusnode = new FocusNode();
+  final _blankFocusnode = FocusNode();
 
   @override
   void initState() {
-    DatabaseMethods().getChats(widget.chatRoomId).then((val) {
-      setState(() {
-        chats = val;
-      });
-    });
+    chats = FirebaseFirestore.instance
+        .collection('chatRoom')
+        .doc(fullName)
+        .collection('chats')
+        .orderBy('date', descending: true)
+        .snapshots();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        // DatabaseMethods().updateUnreadMessagy(widget.chatRoomId);
-        Navigator.of(context).pop();
-        return false;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.white,
-          leading: InkWell(
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.green,
-            ),
-            onTap: () {
-              // DatabaseMethods().updateUnreadMessagy(widget.chatRoomId);
-              Navigator.pop(context);
-            },
-          ),
-          title: Padding(
-            padding: const EdgeInsets.only(right: 40.0),
-            child: Center(
-                child: Text(
-              widget.chatRoomName,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18),
-            )),
-          ),
-        ),
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(_blankFocusnode);
-          },
-          child: Column(
-            children: [
-              Expanded(child: chatMessages()),
-              sendMessageBox(),
-              SizedBox(
-                height: 10,
+        onWillPop: () async {
+          Navigator.of(context).pop();
+          return false;
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              elevation: 0.0,
+              backgroundColor: Colors.white,
+              leading: InkWell(
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.blue,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+              title: Padding(
+                padding: const EdgeInsets.only(right: 40.0),
+                child: Center(
+                    child: Text(
+                  docsName,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                )),
+              ),
+            ),
+            body: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).requestFocus(_blankFocusnode);
+                },
+                child: Column(children: [
+                  Expanded(child: chatMessages()),
+                  sendMessageBox(),
+                  SizedBox(
+                    height: 10,
+                  )
+                ]))));
   }
 
   Widget chatMessages() {
-    String user = auth.currentUser.uid;
     return StreamBuilder(
       stream: chats,
       builder: (context, snapshot) {
@@ -98,42 +103,41 @@ class _chatRoomState extends State<chatRoom> {
                 itemCount: snapshot.data.documents.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return MessageTile(
-                    context,
-                    snapshot.data.documents[index].data["message"],
-                    user == snapshot.data.documents[index].data["sendBy"],
-                    snapshot.data.documents[index].data["date"],
-                    index == snapshot.data.documents.length - 1
-                        ? previousDate = "0"
-                        : previousDate =
-                            ((snapshot.data.documents[index + 1].data["date"])
-                                .split(RegExp(r" |:")))[0],
-                  );
+                  return
+                      // Container();
+                      MessageTile(
+                          context,
+                          snapshot.data.documents[index].data()['message'],
+                          auth.currentUser.uid ==
+                              snapshot.data.documents[index].data()['sendBy'],
+                          snapshot.data.documents[index].data()['date'],
+                          index == snapshot.data.documents.length - 1
+                              ? previousDate = '0'
+                              : previousDate = ((snapshot
+                                      .data.documents[index + 1]
+                                      .data()['date'])
+                                  .split(RegExp(r' |:')))[0]);
                 })
             : Container();
       },
     );
   }
 
+  // ignore: always_declare_return_types
   addMessage() {
-    fp = Provider.of<FirebaseProvider>(context);
-    FirebaseUser currentUser = fp.getUser();
     if (messageEditingController.text.isNotEmpty) {
-      Map<String, dynamic> chatMessageMap = {
-        "sendBy": currentUser.email,
-        "message": messageEditingController.text,
-        'date': new DateFormat('yyyy-MM-dd').add_Hms().format(DateTime.now()),
+      var chatMessageMap = <String, dynamic>{
+        'sendBy': auth.currentUser.uid,
+        'message': messageEditingController.text,
+        'date': DateFormat('yyyy-MM-dd').add_Hms().format(DateTime.now()),
       };
-      DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
-      DatabaseMethods().updateLast(
-          widget.chatRoomId,
-          messageEditingController.text,
-          DateFormat('yyyy-MM-dd').add_Hms().format(DateTime.now()),
-          currentUser.email,
-          true);
-
-      setState(() {
-        messageEditingController.text = "";
+      FirebaseFirestore.instance
+          .collection('chatRoom')
+          .doc(fullName)
+          .collection('chats')
+          .add(chatMessageMap)
+          .catchError((e) {
+        print(e.toString());
       });
     }
   }
@@ -169,7 +173,7 @@ class _chatRoomState extends State<chatRoom> {
           IconButton(
             icon: Icon(Icons.send),
             iconSize: 25,
-            color: Colors.green,
+            color: Colors.blue,
             onPressed: () {
               addMessage();
             },
@@ -182,7 +186,7 @@ class _chatRoomState extends State<chatRoom> {
   // ignore: non_constant_identifier_names
   Widget MessageTile(BuildContext context, String message, bool sendByMe,
       String date, String previousDate) {
-    var allTime = date.split(RegExp(r" |:"));
+    var allTime = date.split(RegExp(r' |:'));
     var todayDate = allTime[0];
     var hour = allTime[1];
     var minute = allTime[2];
@@ -193,7 +197,7 @@ class _chatRoomState extends State<chatRoom> {
       m = '오후';
     }
     hour = hourInt.toString();
-    var time = m + " " + hour + ":" + minute;
+    var time = m + ' ' + hour + ':' + minute;
     return Column(
       children: <Widget>[
         previousDate != todayDate
@@ -233,7 +237,7 @@ class _chatRoomState extends State<chatRoom> {
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.only(bottom: 7),
                 decoration: BoxDecoration(
-                  color: sendByMe ? Colors.lightGreen[100] : Colors.white,
+                  color: sendByMe ? Colors.blue[100] : Colors.white,
                   boxShadow: [
                     BoxShadow(
                         color: Colors.black12, spreadRadius: 1, blurRadius: 1),

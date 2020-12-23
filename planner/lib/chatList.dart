@@ -52,8 +52,8 @@ class _myChatList extends State<myChatList> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          chatRoom(document['chatRoomName'])));
+                                      builder: (context) => chatRoom(
+                                          temp2, document['chatRoomName'])));
                             },
                             // child: postTile(context, document),
                             child: Container(child: Text(temp2)))
