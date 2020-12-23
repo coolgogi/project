@@ -104,6 +104,7 @@ class _DetailPageState extends State<DetailPage> {
                         ? _delete(context)
                         : setState(() {
                             print(" you are not allowed to delete");
+                            // ignore: deprecated_member_use
                             Scaffold.of(crx).showSnackBar(SnackBar(
                                 content:
                                     Text('you are not allowed to delete')));
@@ -153,8 +154,9 @@ class _DetailPageState extends State<DetailPage> {
                                             ? setState(() {
                                                 print(
                                                     " You can only do it once");
-                                                Scaffold.of(ccc).showSnackBar(
-                                                    SnackBar(
+                                                // ignore: deprecated_member_use
+                                                Scaffold.of(context)
+                                                    .showSnackBar(SnackBar(
                                                         content: Text(
                                                             'You can only do it once')));
                                               })
@@ -189,10 +191,66 @@ class _DetailPageState extends State<DetailPage> {
                   widget.updated +
                   '  Modified',
               style: TextStyle(fontSize: 10),
-            )
+            ),
+            RaisedButton(
+              child: Text('start chatting', style: TextStyle(fontSize: 24)),
+              onPressed: () => auth.currentUser.uid != widget.uid
+                  ? makingChatRoom(
+                      auth.currentUser.uid, widget.uid, widget.name, context)
+                  : setState(() {
+                      print(" you can\' make chat room");
+                      // ignore: deprecated_member_use
+                      Scaffold.of(context).showSnackBar(
+                          SnackBar(content: Text('you can\'t make chat room')));
+                    }),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void makingChatRoom(
+      String user1, String user2, String title, BuildContext context) {
+    List<String> users = [user1, user2];
+    String chatRoomName = "$title,$user1,$user2";
+    Map<String, dynamic> chatRoom = {
+      "users": users,
+      "chatRoomName": chatRoomName,
+    };
+    FirebaseFirestore.instance
+        .collection("chatRoom")
+        .doc(chatRoomName)
+        .set(chatRoom)
+        .catchError((e) {
+      print(e);
+    });
+    print("==================================================================");
+    print("[[[$user1, $user2]]]");
+    print("==================================================================");
+    success(context);
+  }
+
+  void success(BuildContext context) async {
+    await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text('ChatRoom was created!'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  '확인',
+                  style: TextStyle(color: Colors.lightBlueAccent),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, '확인');
+                  // Navigator.push()
+                },
+              )
+            ],
+          );
+        });
   }
 }
