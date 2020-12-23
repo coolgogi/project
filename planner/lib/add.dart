@@ -34,9 +34,10 @@ class _AddProductState extends State<AddProduct> {
     TaskSnapshot taskSnapshot = await uploadTask;
     var _dowurl = await (await uploadTask).ref.getDownloadURL();
     final _url = _dowurl.toString();
+
     //firestore
     CollectionReference product =
-    FirebaseFirestore.instance.collection('product') ;
+    FirebaseFirestore.instance.collection('product');
     product
         .doc(_productNameController.text)
         .set({
@@ -45,10 +46,10 @@ class _AddProductState extends State<AddProduct> {
       'description': _productDescriptionController.text,
       'photo': _url,
       'docName': _productNameController.text,
-      'uid':   auth.currentUser.uid,
+      'uid': auth.currentUser.uid,
       'created': today,
-      'updated' : '',
-      'likes' : 0,
+      'updated': '',
+      'likes': 0,
 
     })
         .then((value) => print("User Added"))
@@ -57,7 +58,7 @@ class _AddProductState extends State<AddProduct> {
         .doc(_productNameController.text)
         .collection('likedMembers').doc('sample')
         .set({
-      'sample':'sample'
+      'sample': 'sample'
     });
 
     setState(() {
@@ -67,29 +68,27 @@ class _AddProductState extends State<AddProduct> {
     });
   }
 
-  getGalleryImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  _imgFromCamera() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    );
     setState(() {
       _image = image;
     });
   }
 
-  getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-
+  _imgFromGallery() async {
+    File image = await  ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    );
     setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
+      _image = image;
     });
   }
-
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Add'),
+          title: Text('등록하기'),
           leading: FlatButton(
             padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
             child: Text('Cancel'),
@@ -97,27 +96,22 @@ class _AddProductState extends State<AddProduct> {
           ),
           actions: <Widget>[
             FlatButton(
-                onPressed: () => uploadImage(context), child: Text('Save'))
+                onPressed: () {
+                  uploadImage(context);
+                  Navigator.pop(context);
+                }
+                , child: Text('Save'))
           ],
         ),
         body: Container(
           child: ListView(
-            children: [
+            children: [   //사진 있는지
               _image == null
-                  ? Image.network(
-                  'http://handong.edu/site/handong/res/img/logo.png',
-                  width: MediaQuery.of(context).size.width)
+              // 사진 누르면 이미지 업로드할 수 있게
+                  ? InkWell(child: Image.network(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfBpIhpz-sLYsnrwOdWI9qrKZ8LTiosa6PVQ&usqp=CAU'),onTap: ()=>_showPicker(context))
                   : Image.file(_image),
 //카메라 버튼 , image picker
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.camera_alt),
-                    onPressed: () => getImage(),
-                  ),
-                ],
-              ),
               TextField(
                 controller: _productNameController,
                 decoration: InputDecoration(
@@ -142,5 +136,36 @@ class _AddProductState extends State<AddProduct> {
             ],
           ),
         ));
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
   }
 }

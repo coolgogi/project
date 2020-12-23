@@ -49,62 +49,62 @@ class _MyHomePageState extends State<MyHomePage> {
       final product = Product.fromSnapshot(data);
       return Card(
         clipBehavior: Clip.antiAlias,
-        child: Column(
+        child: InkWell(
+          child:Column(
           // TODO: Center items on the card (103)
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            AspectRatio(
-              aspectRatio: 19 / 11,
-              child: Image.network(
+          crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 1.0) ,
+          child:   AspectRatio(
+              aspectRatio: 15 / 11,
+              child:  Image.network(
                 product.photo,
                 fit: BoxFit.fitWidth,
               ),
             ),
+              ),
+            SizedBox(height: 10),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 0.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       product.name,
                       style: theme.textTheme.headline6,
                       maxLines: 1,
                     ),
-                    SizedBox(height: 8.0),
+                    SizedBox(height: 9.0),
                     Text(
                       formatter.format(product.price),
                       style: theme.textTheme.subtitle2,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        FlatButton(
-                            onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        DetailPage(
-                                            product.photo,
-                                            product.name,
-                                            product.price,
-                                            product.description,
-                                            product.docName,
-                                            product.uid,
-                                            product.created,
-                                            product.updated,
-                                            product.likes),
-                                  ),
-                                ),
-                            child: Text('more')),
-                      ],
-                    )
                   ],
                 ),
               ),
             ),
           ],
         ),
+          onTap: ()=> Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  DetailPage(
+                      product.photo,
+                      product.name,
+                      product.price,
+                      product.description,
+                      product.docName,
+                      product.uid,
+                      product.created,
+                      product.updated,
+                      product.likes),
+            ),
+          ),
+      ),
+
       );
     }).toList();
   }
@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SHRINE1'),
+        title: Text('Home'),
         leading: IconButton(
           icon: Icon(
             Icons.person,
@@ -142,6 +142,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: _buildBody(context),
+    floatingActionButton: FloatingActionButton(
+    onPressed: () {
+    // Add your onPressed code here!
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => AddProduct(),
+        ),
+      );
+    },
+    child: Icon(Icons.add)),
       resizeToAvoidBottomInset: false,
     );
   }
@@ -157,9 +168,10 @@ class _MyHomePageState extends State<MyHomePage> {
             child: GridView.count(
               crossAxisCount: 2,
               padding: EdgeInsets.all(16.0),
-              childAspectRatio: 8.0 / 10.0,
+              childAspectRatio: 9.0 / 10.0,
               children: _buildGridCards(context, snapshot.data.docs),
             ),
+
           );
         });
   }
