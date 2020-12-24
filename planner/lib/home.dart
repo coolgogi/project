@@ -3,10 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'detail.dart';
-import 'profile.dart';
 import 'package:friendlyeats/chatList.dart';
 
-FirebaseAuth _auth = FirebaseAuth.instance;
+
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+
+
+
+FirebaseAuth _auth =  FirebaseAuth.instance;
+
 User user;
 String uid;
 Query query;
@@ -45,31 +50,31 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     _userInit();
-    print("${query.toString()} hihihi");
+
+    final columnCount =
+    MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4;
+
+    final width = MediaQuery.of(context).size.width / columnCount;
+    const height = 400;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Icon(
-            Icons.person,
-            semanticLabel: 'Profile Page',
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/profile');
-          },
-        ),
-        title: Text('Diary'),
+
+
+        title: Text('App'),
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.calendar_today_rounded,
-              semanticLabel: 'grid_view',
+              Icons.shopping_cart_rounded,
+              semanticLabel: 'cart',
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/calendar');
+              Navigator.pushNamed(context, '/add');
             },
           ),
+
           IconButton(
             icon: Icon(
               Icons.add,
@@ -147,7 +152,8 @@ class _HomePageState extends State<HomePage> {
                     return GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 8.0 / 9.0,
+                        childAspectRatio: width / height,
+
                       ),
                       itemCount: querySnapshot.size,
                       itemBuilder: (context, index) =>
@@ -158,19 +164,33 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          IconButton(
-              icon: Icon(
-                Icons.account_box,
-              ),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  //builder: (BuildContext context) => chatList(),
-                ),
-              ))
+
         ],
       ),
       resizeToAvoidBottomInset: false,
+      bottomNavigationBar: ConvexAppBar(
+        style: TabStyle.react,
+        items: [
+          TabItem(icon: Icons.person),
+          TabItem(icon: Icons.home),
+          TabItem(icon: Icons.message_rounded),
+        ],
+        color: Colors.white,
+        backgroundColor: Colors.black,
+        initialActiveIndex: 1 /*optional*/,
+        onTap: (int i) {
+          if (i == 0){
+            Navigator.pushNamed(context, '/profile');
+          }
+          if (i == 1){
+            Navigator.pushNamed(context, '/home');
+          }
+          if (i == 2){
+            Navigator.pushNamed(context, '/chatList');
+          }
+        },
+
+      ),
     );
   }
 }
@@ -220,25 +240,19 @@ class Product extends StatelessWidget {
 
   /// Returns the movie poster.
   Widget get image {
-    return AspectRatio(
-      aspectRatio: 19 / 11,
-      child: Image.network(
-        product['photo'],
-        fit: BoxFit.fitWidth,
+    return Container(
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Image.network(product['photo'],fit: BoxFit.fitWidth,),
       ),
+      height: 250,
+
     );
   }
 
-  Widget get name {
-    return Text(
-      "${product['name']}",
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 15,
-      ),
-      maxLines: 1,
-    );
-  }
+
+
+
 
   Widget get price {
     return Text(
@@ -251,35 +265,52 @@ class Product extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            image,
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    name,
-                    SizedBox(height: 4.0),
-                    price,
-                    SizedBox(height: 10.0),
-                  ],
+    return
+      InkWell(
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+              ),
+              image,
+
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("${product['name']}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .title
+                              .apply(fontSizeFactor: 0.8)),
+                      SizedBox(height: 16.0),
+                      Text(
+                        '\₩ ${product['price']}',
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                      SizedBox(height: 10.0),
+
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return DetailScreen(snapshot);
-        }));
-      },
-    );
+
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) {
+            return DetailScreen(snapshot);
+          }));
+        },
+      );
+
   }
 }

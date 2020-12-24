@@ -18,6 +18,7 @@ class _ProfileState extends State<Profile> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       appBar: AppBar(
         leading: IconButton(
           padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
@@ -48,6 +49,43 @@ class _ProfileState extends State<Profile> {
             ),
             // 사용자 프로필 사진
             AvatarImage(),
+=======
+        appBar: AppBar(
+    leading: IconButton(
+    padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
+    icon: Icon(Icons.arrow_back),
+    onPressed: () => Navigator.pushNamed(context, '/home'),
+    ),
+    actions: <Widget>[
+    IconButton(
+    padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
+    icon: Icon(Icons.exit_to_app),
+    onPressed: () {Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (BuildContext context) => LoginPage(),
+    ),
+    );
+    FirebaseAuth.instance.signOut();
+    }
+    )
+    ],),
+    body:  Container(
+    child: ListView(
+    children: [
+      user.isAnonymous
+    ? Image.network(
+    'http://handong.edu/site/handong/res/img/logo.png',
+    width: MediaQuery.of(context).size.width)
+        : Image.network(user.photoURL),
+//카메라 버튼 , image picker
+
+    Text(
+        auth.currentUser.uid
+    ),user.isAnonymous
+      ?Text('Anonymous')
+      :Text(user.email)
+>>>>>>> 8fd5ae7b28a44ac3449149e56fb3c097e0e3c2f2
 
             user.isAnonymous
                 ? Align(alignment: Alignment.center, child: Text('Anonymous'))
