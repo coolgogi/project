@@ -3,16 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'detail.dart';
+import 'package:friendlyeats/chatList.dart';
+
 
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 
 
 FirebaseAuth _auth =  FirebaseAuth.instance;
+
 User user;
 String uid;
 Query query;
-
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,8 +22,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   String _filterOrSort = "Recent";
 
   void _onActionSelected(String value) async {
@@ -30,8 +30,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-
-  void _userInit() async{
+  void _userInit() async {
     _auth = await FirebaseAuth.instance;
     user = await _auth.currentUser;
     uid = await user.uid;
@@ -43,7 +42,6 @@ class _HomePageState extends State<HomePage> {
         break;
 
       case "Last":
-
         query = query.orderBy('creation', descending: false);
         break;
     }
@@ -64,29 +62,19 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Colors.black,
 
-        leading: IconButton(
-          icon: Icon(
-            Icons.person,
-            semanticLabel: 'Profile Page',
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/profile');
-          },
-        ),
 
-
-
-        title: Text('Diary'),
+        title: Text('App'),
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.calendar_today_rounded,
-              semanticLabel: 'grid_view',
+              Icons.shopping_cart_rounded,
+              semanticLabel: 'cart',
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/calendar');
+              Navigator.pushNamed(context, '/add');
             },
           ),
+
           IconButton(
             icon: Icon(
               Icons.add,
@@ -96,7 +84,6 @@ class _HomePageState extends State<HomePage> {
               Navigator.pushNamed(context, '/add');
             },
           ),
-
         ],
       ),
       body: Column(
@@ -116,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
                 value: _filterOrSort,
-                onChanged: (String newValue) async{
+                onChanged: (String newValue) async {
                   await _onActionSelected(newValue);
                 },
               ),
@@ -131,28 +118,26 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pushNamed(context, '/home');
                 },
               ),
-
             ],
           ),
-
-
           Expanded(
             child: StreamBuilder(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.active) {
                   return Center(child: CircularProgressIndicator());
-                }
-                else if (snapshot == null) {
+                } else if (snapshot == null) {
                   return Center(child: CircularProgressIndicator());
                 }
                 final user = snapshot.data;
-                if(user == null){
+                if (user == null) {
                   return Center(child: Text('noUser'));
                 }
 
-                return StreamBuilder<QuerySnapshot> (
-                  stream: FirebaseFirestore.instance.collection('product').snapshots(),
+                return StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('product')
+                      .snapshots(),
                   builder: (context, stream) {
                     if (stream.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -160,8 +145,7 @@ class _HomePageState extends State<HomePage> {
 
                     if (stream.hasError) {
                       return Center(child: Text(stream.error.toString()));
-                    }
-                    else if(stream.data.docs.length == 0){
+                    } else if (stream.data.docs.length == 0) {
                       return Center(child: CircularProgressIndicator());
                     }
                     QuerySnapshot querySnapshot = stream.data;
@@ -171,19 +155,18 @@ class _HomePageState extends State<HomePage> {
           childAspectRatio: width / height,
 
                       ),
-
                       itemCount: querySnapshot.size,
-                      itemBuilder: (context, index) => Product(querySnapshot.docs[index]),
+                      itemBuilder: (context, index) =>
+                          Product(querySnapshot.docs[index]),
                     );
                   },
                 );
               },
             ),
-
           ),
+
         ],
       ),
-
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: ConvexAppBar(
         style: TabStyle.react,
@@ -203,7 +186,7 @@ class _HomePageState extends State<HomePage> {
             Navigator.pushNamed(context, '/home');
           }
           if (i == 2){
-            Navigator.pushNamed(context, '/home');
+            Navigator.pushNamed(context, '/chatList');
           }
         },
 
@@ -222,26 +205,24 @@ class _SortState extends State<Sort> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      DropdownButton<String>(
-        items: [
-          DropdownMenuItem<String>(
-            child: Text('Recent'),
-            value: 'Recent',
-          ),
-          DropdownMenuItem<String>(
-            child: Text('Last'),
-            value: 'Last',
-          ),
-        ],
-        value: dropdownValue,
-
-        onChanged: (String newValue) {
-          setState(() {
-            dropdownValue = newValue;
-          });
-        },
-      );
+    return DropdownButton<String>(
+      items: [
+        DropdownMenuItem<String>(
+          child: Text('Recent'),
+          value: 'Recent',
+        ),
+        DropdownMenuItem<String>(
+          child: Text('Last'),
+          value: 'Last',
+        ),
+      ],
+      value: dropdownValue,
+      onChanged: (String newValue) {
+        setState(() {
+          dropdownValue = newValue;
+        });
+      },
+    );
   }
 }
 
@@ -282,8 +263,6 @@ class Product extends StatelessWidget {
       ),
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -333,10 +312,6 @@ class Product extends StatelessWidget {
           }));
         },
       );
-
-
-
-
 
   }
 }

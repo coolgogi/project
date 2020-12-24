@@ -17,7 +17,7 @@ import 'home.dart';
 import 'login.dart';
 import 'add.dart';
 import 'profile.dart';
-
+import 'chatList.dart';
 
 // TODO: Convert ShrineApp to stateful widget (104)
 class ShrineApp extends StatelessWidget {
@@ -32,7 +32,7 @@ class ShrineApp extends StatelessWidget {
         '/home' : (context) => HomePage(),
         '/add' : (context) => AddProduct(),
         '/login' : (context) =>LoginPage(),
-
+        '/chatList': (context) => chatList(),
         '/profile' : (context) =>Profile(),
 
 

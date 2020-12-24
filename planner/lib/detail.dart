@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 class DetailScreen extends StatefulWidget {
   final DocumentSnapshot snapshot;
   DetailScreen(this.snapshot);
@@ -43,7 +43,7 @@ class _DetailScreen extends State<DetailScreen> {
         "${product['name']}",
         style: TextStyle(
           fontWeight: FontWeight.bold,
-     
+
           fontSize: 25,
         ),
         maxLines: 1,
@@ -167,6 +167,29 @@ class _DetailScreen extends State<DetailScreen> {
             return _body(documentSnapshot);
           }
       ),
+      bottomNavigationBar: ConvexAppBar(
+        style: TabStyle.react,
+        items: [
+          TabItem(icon: Icons.person),
+          TabItem(icon: Icons.home),
+          TabItem(icon: Icons.message_rounded),
+        ],
+        color: Colors.white,
+        backgroundColor: Colors.black,
+        initialActiveIndex: 1 /*optional*/,
+        onTap: (int i) {
+          if (i == 0){
+            Navigator.pushNamed(context, '/profile');
+          }
+          if (i == 1){
+            Navigator.pushNamed(context, '/home');
+          }
+          if (i == 2){
+            Navigator.pushNamed(context, '/chatList');
+          }
+        },
+
+      ),
     );
   }
 }
@@ -235,27 +258,28 @@ class _body extends StatelessWidget {
 
           ],
         ),
-        price,
-      RaisedButton(
-        child: Text('채팅하기', style: TextStyle(fontSize: 24)),
-        onPressed: () => auth.currentUser.uid != snapshot.data()['uid']
-            ? makingChatRoom(
-            auth.currentUser.uid, snapshot.data()['uid'], snapshot.data()['name'], context)
-            : print("no"),
-      ),
+        Row(
+          children: [
+            price,
+            SizedBox(width: 140),
+            FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.white)),
+              color: Colors.black,
+              textColor: Colors.white,
+
+              child: Text('채팅하기', style: TextStyle(fontSize: 24)),
+              onPressed: () => auth.currentUser.uid != snapshot.data()['uid']
+                  ? makingChatRoom(
+                  auth.currentUser.uid, snapshot.data()['uid'], snapshot.data()['name'], context)
+                  : print("no"),
+            ),
+          ],
+        ),
+
         divider,
         description,
-        Container(
-            padding: EdgeInsets.fromLTRB(40.0, 170.0, 0.0, 0.0),
-            child: (product['auth'] != null) ? Text('creator : ${product['auth']}') : Text('NO CREATOR')),
-        Container(
-            padding: EdgeInsets.fromLTRB(40.0, 0.0, 0.0, 0.0),
-            child:
-            (product['creation'] != null) ? Text('${product['creation'].toDate().toString()} Created') : Text('NO CREATION TIME')),
-        Container(
-            padding: EdgeInsets.fromLTRB(40.0, 0.0, 0.0, 0.0),
-            child:
-            (product['modified'] != null) ? Text('${product['modified'].toDate().toString()} Modified') : Text('NO MODIFIED TIME')),
       ],
     );
   }
