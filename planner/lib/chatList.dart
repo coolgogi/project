@@ -27,11 +27,13 @@ class _myChatList extends State<myChatList> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           title: Text("Chat list"),
+
           leading: IconButton(
             padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.pushNamed(context, '/home'),
           ),
+
         ),
         body: Container(
             child: Column(children: <Widget>[ChatRoom(auth.currentUser.uid)])),
@@ -81,12 +83,12 @@ class _myChatList extends State<myChatList> {
             if (snapshot.hasError) return Text("Error: ${snapshot.error}");
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return Text("Loading...");
+                return Text('Loading...');
               default:
                 return ListView(
                   children: snapshot.data.docs.map((DocumentSnapshot document) {
                     var temp = List<String>.from(document['users']);
-                    String temp2 =
+                    var temp2 =
                         document['chatRoomName'].toString().split(",")[0];
                     return Column(
                       children: [
