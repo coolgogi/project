@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class chatRoom extends StatefulWidget {
-  // final String chatRoomId;
   String docsName;
   String fullName;
   chatRoom(String tp, String tp2) {
@@ -61,7 +60,7 @@ class _chatRoomState extends State<chatRoom> {
               leading: InkWell(
                 child: Icon(
                   Icons.arrow_back_ios,
-                  color: Colors.blue,
+                  color: Colors.black,
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -173,7 +172,7 @@ class _chatRoomState extends State<chatRoom> {
           IconButton(
             icon: Icon(Icons.send),
             iconSize: 25,
-            color: Colors.blue,
+            color: Colors.black,
             onPressed: () {
               addMessage();
             },
@@ -237,7 +236,7 @@ class _chatRoomState extends State<chatRoom> {
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.only(bottom: 7),
                 decoration: BoxDecoration(
-                  color: sendByMe ? Colors.blue[100] : Colors.white,
+                  color: sendByMe ? Colors.black : Colors.black,
                   boxShadow: [
                     BoxShadow(
                         color: Colors.black12, spreadRadius: 1, blurRadius: 1),
@@ -254,7 +253,7 @@ class _chatRoomState extends State<chatRoom> {
                 child: Text(
                   message,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),

@@ -25,6 +25,7 @@ class _myChatList extends State<myChatList> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Chat list"),
+          backgroundColor: Colors.black,
         ),
         body: Container(
             child: Column(children: <Widget>[ChatRoom(auth.currentUser.uid)])));
@@ -39,12 +40,12 @@ class _myChatList extends State<myChatList> {
             if (snapshot.hasError) return Text("Error: ${snapshot.error}");
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return Text("Loading...");
+                return Text('Loading...');
               default:
                 return ListView(
                   children: snapshot.data.docs.map((DocumentSnapshot document) {
                     var temp = List<String>.from(document['users']);
-                    String temp2 =
+                    var temp2 =
                         document['chatRoomName'].toString().split(",")[0];
                     return (temp.toList().contains(auth.currentUser.uid))
                         ? InkWell(
