@@ -62,6 +62,7 @@ class _ProfileState extends State<Profile> {
               selectedColor: Colors.blue,
               unselectedColor: Colors.black,
             ),
+            SizedBox(height: 20,),
             HorizontalList(),
           ],
         ),
