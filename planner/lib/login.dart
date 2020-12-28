@@ -24,14 +24,17 @@ class _LoginPageState extends State<LoginPage> {
           scrollDirection: Axis.vertical,
           children: <Widget>[
             SizedBox(height: 220.0),
-            Center(child: Text('MY DIARY',style: TextStyle(fontWeight:FontWeight.bold),)),
-            SizedBox(height:10),
+            Center(child: Text('MY Shopping',style: TextStyle(fontWeight:FontWeight.bold),)),
+            SizedBox(height:100),
+            /*
             Column(
               children: <Widget>[
                 Image.asset('assets/diary.png',height:60, width: 60),
                 SizedBox(height: 16.0),
               ],
             ),
+            */
+
             SizedBox(height: 80.0),
 
             _AnonymouslySignInSection(),
