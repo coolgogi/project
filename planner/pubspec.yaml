@@ -33,8 +33,8 @@ dependencies:
   cupertino_icons: ^0.1.0
   image_picker: ^0.6.7+14
   shrine_images: 1.1.1
+  step_progress_indicator: ^0.2.5+8
   flutter_signin_button: ^1.0.0
-  convex_bottom_bar: ^2.6.0
   geolocator: ^5.1.3
   location: ^3.0.0
   intl: ^0.16.1

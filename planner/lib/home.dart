@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                     return GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-          childAspectRatio: width / height,
+                        childAspectRatio: width / height,
 
                       ),
                       itemCount: querySnapshot.size,
@@ -239,16 +239,15 @@ class Product extends StatelessWidget {
   }
 
   /// Returns the movie poster.
-
   Widget get image {
     return Container(
-        child: AspectRatio(
-          aspectRatio: 1,
-            child: Image.network(product['photo'],fit: BoxFit.fitWidth,),
-        ),
-        height: 250,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Image.network(product['photo'],fit: BoxFit.fitWidth,),
+      ),
+      height: 250,
 
-      );
+    );
   }
 
 
@@ -268,43 +267,43 @@ class Product extends StatelessWidget {
   Widget build(BuildContext context) {
     return
       InkWell(
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                ),
-                image,
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+              ),
+              image,
 
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
                       Text("${product['name']}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .title
-                            .apply(fontSizeFactor: 0.8)),
-                        SizedBox(height: 16.0),
+                          style: Theme.of(context)
+                              .textTheme
+                              .title
+                              .apply(fontSizeFactor: 0.8)),
+                      SizedBox(height: 16.0),
                       Text(
                         '\₩ ${product['price']}',
                         style: TextStyle(
                           fontSize: 12,
                         ),
                       ),
-                        SizedBox(height: 10.0),
+                      SizedBox(height: 10.0),
 
-                      ],
-                    ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
 
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (_) {
