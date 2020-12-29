@@ -88,7 +88,7 @@ class _AnonymouslySignInSectionState extends State<_AnonymouslySignInSection> {
             backgroundColor: Colors.deepPurple,
             onPressed: () async {
               await _signInAnonymously();
-             await Navigator.pushNamed(context, '/home');
+              await Navigator.pushNamed(context, '/home');
 
             },
           ),
@@ -125,7 +125,7 @@ class _AnonymouslySignInSectionState extends State<_AnonymouslySignInSection> {
         content: Text("Failed to sign in Anonymously"),
       ));
     }
-  print("gogo");
+    print("gogo");
 
   }
 }
