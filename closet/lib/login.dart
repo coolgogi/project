@@ -1,7 +1,10 @@
 import 'package:closet/helper/login_background.dart';
+import 'package:closet/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'data/join_or_login.dart';
+import 'forget_pw.dart';
 
 class LoginPage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -13,46 +16,85 @@ class LoginPage extends StatelessWidget {
     final Size size = MediaQuery.of(context).size; // 휴대폰 화면 크기 가져오기
 
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomInset : false,
         body: Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        CustomPaint(
-          size: size,
-          painter:
-              LoginBackground(isJoin: Provider.of<JoinOrLogin>(context).isJoin),
-        ),
-        Column(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-          _logoImage,
-          Stack(
-            children: <Widget>[
-              _inputForm(size),
-              _loginButton(size),
-            ],
-          ),
-          Container(
-            height: size.height * 0.1,
-          ),
-          Consumer<JoinOrLogin>(
-            builder: (context, joinOrLogin, child) => GestureDetector(
-                onTap: () {
-                  joinOrLogin.toggle();
-                },
-                child: Text(
-                  joinOrLogin.isJoin
-                      ? "Already Have an Account? Sign in"
-                      : "Don't Have an Account? Create One",
-                  style: TextStyle(
-                      color:
-                          joinOrLogin.isJoin ? Colors.lightGreen : Colors.blue),
-                )),
-          ),
-          Container(
-            height: size.height * 0.05,
-          )
-        ])
-      ],
-    ));
+          alignment: Alignment.center,
+          children: <Widget>[
+            CustomPaint(
+              size: size,
+              painter: LoginBackground(
+                  isJoin: Provider.of<JoinOrLogin>(context).isJoin),
+            ),
+            Column(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+              _logoImage,
+              Stack(
+                children: <Widget>[
+                  _inputForm(size),
+                  _loginButton(size),
+                ],
+              ),
+              Container(
+                height: size.height * 0.1,
+              ),
+              Consumer<JoinOrLogin>(
+                builder: (context, joinOrLogin, child) => GestureDetector(
+                    onTap: () {
+                      joinOrLogin.toggle();
+                    },
+                    child: Text(
+                      joinOrLogin.isJoin
+                          ? "Already Have an Account? Sign in"
+                          : "Don't Have an Account? Create One",
+                      style: TextStyle(
+                          color: joinOrLogin.isJoin
+                              ? Colors.lightGreen
+                              : Colors.blue),
+                    )),
+              ),
+              Container(
+                height: size.height * 0.05,
+              )
+            ])
+          ],
+        ));
+  }
+
+  void _register(BuildContext context) async {
+    final UserCredential result = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+    final User user = result.user;
+
+    if (user == null) {
+      final snackBar = SnackBar(content: Text('Please try again later.'));
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage(
+                  email: user.email,
+                )));
+  }
+
+  void _login(BuildContext context) async {
+    final UserCredential result = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+    final User user = result.user;
+
+    if (user == null) {
+      final snackBar = SnackBar(content: Text('Please try again later.'));
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage(
+                  email: user.email,
+                )));
   }
 
   Widget get _logoImage => Expanded(
@@ -84,7 +126,7 @@ class LoginPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(25)),
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  print(_emailController.text.toString());
+                  joinOrLogin.isJoin ? _register(context) : _login(context);
                 }
               }),
         ),
@@ -140,12 +182,23 @@ class LoginPage extends StatelessWidget {
                   Consumer<JoinOrLogin>(
                     builder: (context, joinOrLogin, child) => Opacity(
                         opacity: joinOrLogin.isJoin ? 0 : 1,
-                        child: Text("Forgot Password")),
-                    ),
+                        child: GestureDetector(
+                            onTap: joinOrLogin.isJoin
+                                ? null
+                                : () {
+                                    goToForgetPw(context);
+                                  },
+                            child: Text("Forgot Password"))),
+                  ),
                 ],
               )),
         ),
       ),
     );
+  }
+
+  goToForgetPw(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ForgetPw()));
   }
 }
