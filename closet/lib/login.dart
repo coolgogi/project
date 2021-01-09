@@ -25,36 +25,41 @@ class LoginPage extends StatelessWidget {
               painter: LoginBackground(
                   isJoin: Provider.of<JoinOrLogin>(context).isJoin),
             ),
-            Column(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-              _logoImage,
-              Stack(
-                children: <Widget>[
-                  _inputForm(size),
-                  _loginButton(size),
-                ],
+            SingleChildScrollView(
+              child: SizedBox(
+                height: size.height,
+                child: Column(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+                  _logoImage,
+                  Stack(
+                    children: <Widget>[
+                      _inputForm(size),
+                      _loginButton(size),
+                    ],
+                  ),
+                  Container(
+                    height: size.height * 0.1,
+                  ),
+                  Consumer<JoinOrLogin>(
+                    builder: (context, joinOrLogin, child) => GestureDetector(
+                        onTap: () {
+                          joinOrLogin.toggle();
+                        },
+                        child: Text(
+                          joinOrLogin.isJoin
+                              ? "Already Have an Account? Sign in"
+                              : "Don't Have an Account? Create One",
+                          style: TextStyle(
+                              color: joinOrLogin.isJoin
+                                  ? Colors.lightGreen
+                                  : Colors.blue),
+                        )),
+                  ),
+                  Container(
+                    height: size.height * 0.05,
+                  )
+                ]),
               ),
-              Container(
-                height: size.height * 0.1,
-              ),
-              Consumer<JoinOrLogin>(
-                builder: (context, joinOrLogin, child) => GestureDetector(
-                    onTap: () {
-                      joinOrLogin.toggle();
-                    },
-                    child: Text(
-                      joinOrLogin.isJoin
-                          ? "Already Have an Account? Sign in"
-                          : "Don't Have an Account? Create One",
-                      style: TextStyle(
-                          color: joinOrLogin.isJoin
-                              ? Colors.lightGreen
-                              : Colors.blue),
-                    )),
-              ),
-              Container(
-                height: size.height * 0.05,
-              )
-            ])
+            )
           ],
         ));
   }
