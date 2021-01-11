@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-// import 'home.dart';
+import 'home.dart';
 import 'login.dart';
 // import 'add.dart';
 // import 'profile.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       initialRoute: '/login',
       routes: {
-        // '/home' : (context) => HomePage(),
+        '/home' : (context) => HomePage(),
         // '/add' : (context) => AddProduct(),
         // '/login' : (context) =>LoginPage(),
         // '/chatList': (context) => chatList(),
