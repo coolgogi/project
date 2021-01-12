@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "767690050252",
+    "project_id": "closet-24bdd",
+    "storage_bucket": "closet-24bdd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767690050252:android:91a4ddad193d92b4191069",
+        "android_client_info": {
+          "package_name": "com.hgu.closet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767690050252-r6csl8pkvlhn12ds1670fbq05jc309sj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hgu.closet",
+            "certificate_hash": "48b35e6daf23ecfc04692a012ccae500f85261c2"
+          }
+        },
+        {
+          "client_id": "767690050252-r2ubltv49dvsgmk8nlb6tg6vtdvkkhi9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvfep8L47zvfTDpqk7_zQBpttfnuoZFsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767690050252-r2ubltv49dvsgmk8nlb6tg6vtdvkkhi9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
