@@ -2,15 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="12c39db8-9ab6-4040-83d0-84d48c761b60" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../closet/assets/7pv.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../closet/assets/S9KY.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../closet/assets/google_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../closet/lib/google_sign_in.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../closet/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../closet/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../closet/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../closet/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../closet/lib/app.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../closet/lib/app.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../closet/lib/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../closet/lib/home.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../closet/lib/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../closet/lib/login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../closet/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../closet/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[Nexus_5_API_25]" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -25,7 +33,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../provider_test" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
