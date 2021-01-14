@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 ThemeData light = ThemeData(
     brightness: Brightness.light,
@@ -14,7 +15,7 @@ ThemeData dark = ThemeData(
 
 class ThemeNotifier extends ChangeNotifier {
   final String key = "theme";
-  // SharedPreferences _pref;
+  SharedPreferences _pref;
   bool _darkTheme;
   bool get darkTheme => _darkTheme;
   ThemeNotifier() {
