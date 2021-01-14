@@ -37,19 +37,22 @@ class _myPageState extends State<myPage> {
           automaticallyImplyLeading: false,
         ),
         body: ListView(children: <Widget>[
-          Center(
-            child: SizedBox(
-              width: 100,
-              height: 40,
-              child: GestureDetector(
-                onTap: _onButtonTap,
-                child: FlareActor(
-                  'assets/switch_daytime.flr',
-                  animation: _animationName,
+          SizedBox(width: 900),
+            Container(
+              margin: EdgeInsets.fromLTRB(320, 0, 0, 0),
+              child: SizedBox(
+                width: 100,
+                height: 40,
+                child: GestureDetector(
+                  onTap: _onButtonTap,
+                  child: FlareActor(
+                    'assets/switch_daytime.flr',
+                    animation: _animationName,
+                  ),
                 ),
               ),
             ),
-          ),
+
           Center(
             child: Container(
               child: FlatButton(
