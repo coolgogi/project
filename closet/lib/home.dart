@@ -1,12 +1,11 @@
 import 'package:closet/myPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'myPage.dart';
 import 'closet.dart';
 import 'color.dart';
 import 'app.dart';
+import 'request.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({this.email});
@@ -25,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     _children = [
       closet(),
-      closet(),
+      request(),
       closet(),
       myPage(),
     ];
