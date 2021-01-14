@@ -25,34 +25,40 @@ class _myPageState extends State<myPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF808080),
-        title: Text(
-          "I-Clothes : my Page",
-          style: Theme.of(context).textTheme.headline5,
+        appBar: AppBar(
+          backgroundColor: Color(0xFF808080),
+          title: Text(
+            "I-Clothes : my Page",
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.account_circle), onPressed: () {}),
+          ],
+          automaticallyImplyLeading: false,
         ),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.account_circle), onPressed: () {}),
-        ],
-        automaticallyImplyLeading: false,
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            child: Text(
-              "Dark Mode",
-              textAlign: TextAlign.center,
+        body: ListView(children: <Widget>[
+          Center(
+            child: SizedBox(
+              width: 100,
+              height: 40,
+              child: GestureDetector(
+                onTap: _onButtonTap,
+                child: FlareActor(
+                  'assets/switch_daytime.flr',
+                  animation: _animationName,
+                ),
+              ),
             ),
           ),
-          CupertinoSwitch(
-              value: dark,
-              onChanged: (bool value) {
-                setState(() {
-                  dark = value;
-                });
-              })
-        ],
-      ),
-    );
+          Center(
+            child: Container(
+              child: FlatButton(
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                  child: Text("Logout")),
+            ),
+          ),
+        ]));
   }
 }
