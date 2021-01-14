@@ -26,7 +26,6 @@ import 'color.dart';
 
 // TODO: Convert ShrineApp to stateful widget (104)
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,17 +33,17 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       initialRoute: '/login',
       routes: {
-        '/home' : (context) => HomePage(),
+        '/home': (context) => HomePage(),
         // '/add' : (context) => AddProduct(),
         // '/login' : (context) =>LoginPage(),
         // '/chatList': (context) => chatList(),
         // '/profile' : (context) =>Profile(),
-        '/login' : (context) => LoginPage(),
-        '/myPage' : (context) => myPage(),
+        '/login': (context) => LoginPage(),
+        '/myPage': (context) => myPage(),
       },
       onGenerateRoute: _getRoute,
       // TODO: Add a theme (103)
-      theme: _closetTheme,
+      // theme: _closetTheme,
     );
   }
 
@@ -59,78 +58,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-final ThemeData _closetTheme = _buildClosetTheme();
-
-ThemeData _buildClosetTheme() {
-  final ThemeData base = ThemeData.light();
-  return base.copyWith(
-    colorScheme:
-    ColorScheme(
-        primary: closetPurple,
-        primaryVariant: closetPurple,
-        secondary: closetBlack,
-        secondaryVariant: closetBlack,
-        surface: Colors.white,
-        background: BackgroundWhite,
-        error: kShrineErrorRed,
-
-        onPrimary: closetPurple,
-        onSecondary: closetBlack,
-        onSurface: Colors.white,
-        onBackground: Colors.white,
-        onError: kShrineErrorRed,
-        brightness: Brightness.light,
-    ),
-    scaffoldBackgroundColor: BackgroundWhite,
-    cardColor: BackgroundWhite,
-    // accentColor: closetBlack,
-    // primaryColor: closetPurple,
-    buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: closetBlack,
-      colorScheme: base.colorScheme.copyWith(
-        primary: closetPurple,
-        secondary: closetBlack,
-      ),
-
-    ),
-    buttonBarTheme: base.buttonBarTheme.copyWith(
-      buttonTextTheme: ButtonTextTheme.accent,
-    ),
-
-
-    textTheme: _buildClosetTextTheme(base.textTheme),
-    primaryTextTheme: _buildClosetTextTheme(base.primaryTextTheme),
-    accentTextTheme: _buildClosetTextTheme(base.accentTextTheme),
-    primaryIconTheme: base.iconTheme.copyWith(
-        color: closetPurple,
-    ),
-  );
-}
-
-TextTheme _buildClosetTextTheme(TextTheme base) {
-  return base.copyWith(
-    headline5: base.headline5.copyWith(
-      fontWeight: FontWeight.w400,
-      fontFamily: 'Sansita',
-    ),
-    headline6: base.headline6.copyWith(
-      fontSize: 18.0
-    ),
-    caption: base.caption.copyWith(
-
-      fontWeight: FontWeight.w400,
-      fontSize: 14.0,
-    ),
-    bodyText1: base.bodyText1.copyWith(
-      fontWeight: FontWeight.w500,
-      fontSize: 16.0,
-    ),
-  ).apply(
-    displayColor: closetBlack,
-  );
-}
-
 
 // TODO: Build a Shrine Theme (103)
 // TODO: Build a Shrine Text Theme (103)

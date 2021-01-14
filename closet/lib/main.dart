@@ -16,19 +16,16 @@ class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User>(
-      stream: FirebaseAuth.instance.onAuthStateChanged,
-      builder: (context, snapshot) {
-
-        if(snapshot.data == null) {
-          return ChangeNotifierProvider<JoinOrLogin>.value(
-            value: JoinOrLogin(),
-            child: MyApp(),
-          );
-        } else {
-          return HomePage(email: snapshot.data.email);
-        }
-      }
-    );
+        stream: FirebaseAuth.instance.onAuthStateChanged,
+        builder: (context, snapshot) {
+          if (snapshot.data == null) {
+            return ChangeNotifierProvider<JoinOrLogin>.value(
+              value: JoinOrLogin(),
+              child: MyApp(),
+            );
+          } else {
+            return HomePage(email: snapshot.data.email);
+          }
+        });
   }
 }
-
