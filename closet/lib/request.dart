@@ -13,25 +13,32 @@ class request extends StatefulWidget {
 class _request extends State<request> {
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xFF808080),
-          title: Text(
-            "I-Clothes",
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          actions: <Widget>[
-            IconButton(icon: Icon(Icons.account_circle), onPressed: () {}),
-          ],
-          automaticallyImplyLeading: false,
+      appBar: AppBar(
+        backgroundColor: Color(0xFF808080),
+        title: Text(
+          "I-Clothes",
+          style: Theme.of(context).textTheme.headline5,
         ),
-        body: Column(
-          children: <Widget>[
-            Text("\n코디 요청", textAlign: TextAlign.end),
-            Codi_request(),
-            Text("\nBest Stylist", textAlign: TextAlign.end),
-            best_Stylist(),
-          ],
-        ));
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.account_circle), onPressed: () {}),
+        ],
+        automaticallyImplyLeading: false,
+      ),
+      body: Column(
+        children: <Widget>[
+          Text("\n코디 요청", textAlign: TextAlign.end),
+          Codi_request(),
+          Text("\nBest Stylist", textAlign: TextAlign.end),
+          best_Stylist(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        label: Text('코디 도움받기'),
+        backgroundColor: Colors.purple,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 
   Widget Codi_request() {
@@ -114,6 +121,24 @@ class _request extends State<request> {
                         )
                       ])),
                 );
+                // return Container(
+                //     child: Card(
+                //         clipBehavior: Clip.antiAlias,
+                //         child: Column(children: [
+                //           ListTile(
+                //             leading: Icon(Icons.account_circle),
+                //             title: Text(document['nickname']),
+                //             subtitle: Text(document['score'].toString()),
+                //           ),
+                //           Padding(
+                //             padding: const EdgeInsets.all(16.0),
+                //             // child: Text(
+                //             //   'Hello',
+                //             //   style: TextStyle(
+                //             //       color: Colors.black.withOpacity(0.6)),
+                //             // )
+                //           )
+                //         ])));
               }).toList(),
             );
         }
