@@ -28,6 +28,8 @@ dependencies:
   google_sign_in: ^4.5.1
   flutter_facebook_login: ^3.0.0
   shared_preferences: ^0.5.12+4
+  flare_flutter: ^2.0.6
+
 
   flutter:
     sdk: flutter
@@ -61,6 +63,14 @@ flutter:
     - assets/1LMu.gif
     - assets/google_logo.png
     - assets/kakao_login_medium_narrow.png
+    - assets/top1.JPG
+    - assets/top2.JPG
+    - assets/bottom1.JPG
+    - assets/bottom2.JPG
+    - assets/bottom3.JPG
+    - assets/sho1.JPG
+    - assets/sho2.JPG
+    - assets/switch_daytime.flr
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
