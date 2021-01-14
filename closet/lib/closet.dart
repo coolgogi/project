@@ -2,6 +2,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
+
 
 class closet extends StatefulWidget {
   @override
@@ -9,6 +14,40 @@ class closet extends StatefulWidget {
 }
 
 class _closet extends State<closet> {
+  List<Image> imageList;
+  List<Card> _buildGridCards(BuildContext context) {
+    if (imageList == null || imageList.isEmpty) {
+      return const <Card>[];
+    }
+    return imageList.map((image) {
+      return Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          // TODO: Center items on the card (103)
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: 18 / 11,
+              child: image),
+          ],
+        ),
+      );
+    }).toList();
+  }
+  getGalleryImage() async {
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      convertFileToImage(image);
+    });
+  }
+  Future<Image> convertFileToImage(File picture) async {
+    List<int> imageBase64 = picture.readAsBytesSync();
+    String imageAsString = base64Encode(imageBase64);
+    Uint8List uint8list = base64.decode(imageAsString);
+    Image image = Image.memory(uint8list);
+    imageList.add(image);
+  }
+
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '내 옷장',
@@ -29,9 +68,17 @@ class _closet extends State<closet> {
           ),
           body: TabBarView(
             children: [
-              Center(child: Text('코디')),
+              GridView.count(crossAxisCount: 2,
+                padding: EdgeInsets.all(16.0),
+                childAspectRatio: 8.0 / 9.0,
+                children: _buildGridCards(context)
+              ),
               Center(child: Text('옷장')),
             ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () =>getGalleryImage(),
           ),
         ),
       ),
