@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:provider/provider.dart';
+import 'theme/darkmode.dart';
 
 class myPage extends StatefulWidget {
   @override
@@ -37,22 +39,52 @@ class _myPageState extends State<myPage> {
           automaticallyImplyLeading: false,
         ),
         body: ListView(children: <Widget>[
-          SizedBox(width: 900),
-            Container(
-              margin: EdgeInsets.fromLTRB(320, 0, 0, 0),
-              child: SizedBox(
-                width: 100,
-                height: 40,
-                child: GestureDetector(
-                  onTap: _onButtonTap,
-                  child: FlareActor(
-                    'assets/switch_daytime.flr',
-                    animation: _animationName,
-                  ),
+            SizedBox(width: 900),
+          // Consumer<ThemeNotifier>(
+          //   builder: (context, notifier, child) => SwitchListTile(
+          //     title: Text("Dark Mode"),
+          //     onChanged: (value) {
+          //       notifier.toggleTheme();
+          //     },
+          //     value: notifier.darkTheme,
+          //   ),
+          // ),
+          Consumer<ThemeNotifier>(
+            builder: (context, notifier, child) => SizedBox(
+              width: 100,
+              height: 40,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (_animationName == 'day_idle' ||
+                        _animationName == 'switch_day') {
+                      _animationName = 'switch_night';
+                    } else {
+                      _animationName = 'switch_day';
+                    }
+                    notifier.toggleTheme();
+                  });
+                },
+                child: FlareActor(
+                  'assets/switch_daytime.flr',
+                  animation: _animationName,
                 ),
               ),
             ),
-
+          ),
+          // Center(
+          //   child: SizedBox(
+          //     width: 100,
+          //     height: 40,
+          //     child: GestureDetector(
+          //       onTap: _onButtonTap,
+          //       child: FlareActor(
+          //         'assets/switch_daytime.flr',
+          //         animation: _animationName,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Center(
             child: Container(
               child: FlatButton(
