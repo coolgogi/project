@@ -21,7 +21,7 @@ class _myPageState extends State<myPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('엥 유린데영??'),
+        title: Text('엥 귀여운 수현인데영??'),
         automaticallyImplyLeading: false,
       ),
       body: ListView(
