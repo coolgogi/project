@@ -8,7 +8,6 @@ class myPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('엥 유린데영??'),
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xff5808e5),
       ),
       body: Center(
         child: Container(
