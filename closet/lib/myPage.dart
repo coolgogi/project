@@ -1,18 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 class myPage extends StatefulWidget {
-  myPage();
-
   @override
-  _myPage createState() => _myPage();
+  _myPageState createState() => _myPageState();
 }
 
-class _myPage extends State<myPage> {
-  int _currentIndex = 0;
-  List<Widget> _children;
+class _myPageState extends State<myPage> {
   bool dark = false;
+
+  String _animationName = 'day_idle';
+  void _onButtonTap() {
+    setState(() {
+      if (_animationName == 'day_idle' || _animationName == 'switch_day') {
+        _animationName = 'switch_night';
+      } else {
+        _animationName = 'switch_day';
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
