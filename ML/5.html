@@ -28,9 +28,11 @@
         // var fitParam = { epochs: 100} 
         var fitParam = { 
             epochs: 100, 
-            callbacks:{onEpochEnd:function(epoch, logs){
-                console.log('epoch', epoch, logs);
-                }
+            callbacks:{
+                onEpochEnd:
+                    function(epoch, logs){
+                        console.log('epoch', epoch, logs, 'RMSE=>', Math.sqrt(logs.loss));
+                    }
             }
         } // loss 추가 예제
         model.fit(원인, 결과, fitParam).then(function (result) {
@@ -39,7 +41,8 @@
             // 4.1 기존의 데이터를 이용
             var 예측한결과 = model.predict(원인);
             예측한결과.print();
-
+            // model.save('downloads://lemon');
+            model.save('localstorage://lemon');
         });  
 
         // 4.2 새로운 데이터를 이용

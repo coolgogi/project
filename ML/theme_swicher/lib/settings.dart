@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:theme_swicher/theme_provider.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -12,10 +14,14 @@ class SettingsPage extends StatelessWidget {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SwitchListTile(
-                  title: Text("Dark Mode"),
-                  onChanged: (value) {},
-                  value: false,
+                Consumer<ThemeNotifier>(
+                  builder: (context, notifier, child) => SwitchListTile(
+                    title: Text("Dark Mode"),
+                    onChanged: (value) {
+                      notifier.toggleTheme();
+                    },
+                    value: notifier.darkTheme,
+                  ),
                 ),
                 Card(
                   child: ListTile(
