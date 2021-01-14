@@ -62,6 +62,17 @@ flutter:
     - assets/1LMu.gif
     - assets/google_logo.png
     - assets/kakao_login_medium_narrow.png
+    - assets/codi1.jpg
+    - assets/codi2.jpg
+    - assets/codi3.jpg
+    - assets/codi4.jpg
+    - assets/codi5.jpg
+    - assets/codi6.jpg
+    - assets/codi7.jpg
+    - assets/codi8.jpg
+    - assets/codi9.jpg
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
