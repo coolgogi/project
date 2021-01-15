@@ -37,15 +37,15 @@ class _HomePageState extends State<HomePage> {
         child: Consumer<ThemeNotifier>(
             builder: (context, ThemeNotifier notifier, child) {
           return MaterialApp(
-            theme: notifier.darkTheme ? dark : light,
+            theme: notifier.darkTheme ? dark_theme : light_theme,
             home: Scaffold(
               body: _children[_currentIndex],
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 currentIndex: _currentIndex,
-                selectedItemColor: PrimaryColorLight,
+                selectedItemColor: notifier.darkTheme ? PrimaryColorDark : PrimaryColorLight,
                 //unselectedItemColor: Theme.of(context).colorScheme.onSecondary,
-                unselectedItemColor: OnSecondaryLight,
+                unselectedItemColor: notifier.darkTheme ? SecondaryDark : SecondaryLight,
                 selectedLabelStyle: Theme.of(context).textTheme.caption,
                 unselectedLabelStyle: Theme.of(context).textTheme.caption,
                 onTap: (value) {
@@ -110,96 +110,58 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-final ThemeData _closetTheme = _buildClosetTheme();
-
-ThemeData _buildClosetTheme() {
-  final ThemeData base = ThemeData.light();
-  return base.copyWith(
-    colorScheme: ColorScheme(
-      primary: PrimaryColorLight,
-      primaryVariant: PrimaryVariantLight,
-      secondary: SecondaryLight,
-      secondaryVariant: SecondaryVariantLight,
-      surface: SurfaceLight,
-      background: BackgroundLight,
-      error: ErrorLight,
-      onPrimary: OnPrimaryLight,
-      onSecondary: OnSecondaryLight,
-      onSurface: OnSurfaceLight,
-      onBackground: OnBackgroundLight,
-      onError: OnErrorLight,
-      brightness: Brightness.light,
-    ),
-    //
-  //     const PrimaryColorLight = Color(0xFF6200EE);
-  //     const PrimaryVariantLight = Color(0xFF3700B3);
-  // const SecondaryLight = Color(0xFF03DAC6);
-  // const SecondaryVariantLight = Color(0xFF018786);
-  // const BackgroundLight = Color(0xFFFFFFFF);
-  // const SurfaceLight = Color(0xFFFFFFFF);
-  // const ErrorLight = Color(0xFFB00020);
-  // const OnPrimaryLight = Color(0xFFFFFFFF);
-  // const OnSecondaryLight = Color(0xFF000000);
-  // const OnBackgroundLight = Color(0xFF000000);
-  // const OnSurfaceLight = Color(0xFF000000);
-  // const OnErrorLight = Color(0xFFFFFFFF);
-  //
-  // const PrimaryColorDark = Color(0xFFBB86FC);
-  // const PrimaryVariantDark = Color(0xFF3700B3);
-  // const SecondaryDark = Color(0xFF03DAC6);
-  // const SecondaryVariantDark = Color(0xFF03DAC6);
-  // const BackgroundDark = Color(0xFF121212);
-  // const SurfaceDark = Color(0xFF121212);
-  // const ErrorDark = Color(0xFFCF6679);
-  // const OnPrimaryDark = Color(0xFF000000);
-  // const OnSecondaryDark = Color(0xFF000000);
-  // const OnBackgroundDark = Color(0xFFFFFFFF);
-  // const OnSurfaceDark = Color(0xFFFFFFFF);
-  // const OnErrorDark = Color(0xFF000000);
-
-  //
-    scaffoldBackgroundColor: BackgroundLight,
-    cardColor: BackgroundLight,
-    // accentColor: closetBlack,
-    // primaryColor: closetPurple,
-    buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: OnSecondaryLight,
-      colorScheme: base.colorScheme.copyWith(
-        primary: SurfaceLight,
-        secondary: SurfaceLight,
-      ),
-    ),
-    buttonBarTheme: base.buttonBarTheme.copyWith(
-      buttonTextTheme: ButtonTextTheme.accent,
-    ),
-
-    textTheme: _buildClosetTextTheme(base.textTheme),
-    primaryTextTheme: _buildClosetTextTheme(base.primaryTextTheme),
-    accentTextTheme: _buildClosetTextTheme(base.accentTextTheme),
-    // primaryIconTheme: base.iconTheme.copyWith(
-    //   color: closetPurple,
-    // ),
-  );
-}
-
-TextTheme _buildClosetTextTheme(TextTheme base) {
-  return base
-      .copyWith(
-        headline5: base.headline5.copyWith(
-          fontWeight: FontWeight.w400,
-          fontFamily: 'Sansita',
-        ),
-        headline6: base.headline6.copyWith(fontSize: 18.0),
-        caption: base.caption.copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 14.0,
-        ),
-        bodyText1: base.bodyText1.copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 16.0,
-        ),
-      )
-      .apply(
-        displayColor: OnSecondaryLight,
-      );
-}
+// final ThemeData _closetTheme = _buildClosetTheme();
+//
+// ThemeData _buildClosetTheme() {
+//   final ThemeData base = ThemeData.light();
+//   return base.copyWith(
+//     colorScheme: ColorScheme(
+//       primary: PrimaryColorLight,
+//       primaryVariant: PrimaryVariantLight,
+//       secondary: SecondaryLight,
+//       secondaryVariant: SecondaryVariantLight,
+//       surface: SurfaceLight,
+//       background: BackgroundLight,
+//       error: ErrorLight,
+//       onPrimary: OnPrimaryLight,
+//       onSecondary: OnSecondaryLight,
+//       onSurface: OnSurfaceLight,
+//       onBackground: OnBackgroundLight,
+//       onError: OnErrorLight,
+//       brightness: Brightness.light,
+//     ),
+//     //
+//   //     const PrimaryColorLight = Color(0xFF6200EE);
+//   //     const PrimaryVariantLight = Color(0xFF3700B3);
+//   // const SecondaryLight = Color(0xFF03DAC6);
+//   // const SecondaryVariantLight = Color(0xFF018786);
+//   // const BackgroundLight = Color(0xFFFFFFFF);
+//   // const SurfaceLight = Color(0xFFFFFFFF);
+//   // const ErrorLight = Color(0xFFB00020);
+//   // const OnPrimaryLight = Color(0xFFFFFFFF);
+//   // const OnSecondaryLight = Color(0xFF000000);
+//   // const OnBackgroundLight = Color(0xFF000000);
+//   // const OnSurfaceLight = Color(0xFF000000);
+//   // const OnErrorLight = Color(0xFFFFFFFF);
+//   //
+//   // const PrimaryColorDark = Color(0xFFBB86FC);
+//   // const PrimaryVariantDark = Color(0xFF3700B3);
+//   // const SecondaryDark = Color(0xFF03DAC6);
+//   // const SecondaryVariantDark = Color(0xFF03DAC6);
+//   // const BackgroundDark = Color(0xFF121212);
+//   // const SurfaceDark = Color(0xFF121212);
+//   // const ErrorDark = Color(0xFFCF6679);
+//   // const OnPrimaryDark = Color(0xFF000000);
+//   // const OnSecondaryDark = Color(0xFF000000);
+//   // const OnBackgroundDark = Color(0xFFFFFFFF);
+//   // const OnSurfaceDark = Color(0xFFFFFFFF);
+//   // const OnErrorDark = Color(0xFF000000);
+//
+//   //
+//
+//     // primaryIconTheme: base.iconTheme.copyWith(
+//     //   color: closetPurple,
+//     // ),
+//   );
+// }
+//

@@ -57,10 +57,10 @@ class _closetState extends State<closet>
                       color: Theme
                           .of(context)
                           .colorScheme
-                          .onSecondary,
+                          .onPrimary,
                       onPressed: () {}),
                 ),              ],
-              centerTitle: true,
+              centerTitle: false,
               pinned: true,
               floating: true,
               bottom: TabBar(
@@ -71,7 +71,7 @@ class _closetState extends State<closet>
                 labelColor: Theme
                     .of(context)
                     .colorScheme
-                    .onSecondary,
+                    .onPrimary,
                 labelStyle: TextStyle(fontWeight: FontWeight.w600),
                 unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
 
@@ -102,7 +102,7 @@ class _closetState extends State<closet>
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(4, 20, 360, 0),
+            padding: const EdgeInsets.fromLTRB(4, 20, 330, 0),
             child: Text('상의'),
           ),
           Container(
@@ -125,7 +125,7 @@ class _closetState extends State<closet>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(4, 0, 360, 0),
+            padding: const EdgeInsets.fromLTRB(4, 0, 330, 0),
             child: Text('하의'),
           ),
           Container(
@@ -154,7 +154,7 @@ class _closetState extends State<closet>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(4, 0, 360, 0),
+            padding: const EdgeInsets.fromLTRB(4, 0, 330  , 0),
             child: Text('신발'),
           ),
           Container(

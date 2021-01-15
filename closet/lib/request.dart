@@ -14,7 +14,7 @@ class _request extends State<request> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF808080),
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(
           "I-Clothes",
           style: Theme.of(context).textTheme.headline5,
@@ -34,8 +34,8 @@ class _request extends State<request> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
-        label: Text('코디 도움받기'),
-        backgroundColor: Colors.purple,
+        label: Text('코디 도움받기', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
