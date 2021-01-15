@@ -1,12 +1,13 @@
 import 'package:closet/myPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'myPage.dart';
 import 'closet.dart';
 import 'color.dart';
 import 'app.dart';
+import 'request.dart';
+import 'theme/darkmode.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({this.email});
@@ -25,51 +26,57 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     _children = [
       closet(),
-      closet(),
+      request(),
       closet(),
       myPage(),
     ];
     // final colorScheme = Theme.of(context).colorScheme;
     // final textTheme = Theme.of(context).textTheme;
-    return MaterialApp(
-      home: Scaffold(
-        body: _children[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          //selectedItemColor: closetPurple,
-          unselectedItemColor: Theme.of(context).colorScheme.primary,
-          //unselectedItemColor: closetBlack,
-          selectedLabelStyle: Theme.of(context).textTheme.caption,
-          unselectedLabelStyle: Theme.of(context).textTheme.caption,
-          onTap: (value) {
-            // Respond to item press.
-            setState(() => _currentIndex = value);
-            print(_currentIndex);
-          },
-          items: [
-            BottomNavigationBarItem(
-              title: Text('Home'),
-              icon: Icon(Icons.home_outlined),
+    return ChangeNotifierProvider(
+        create: (_) => ThemeNotifier(),
+        child: Consumer<ThemeNotifier>(
+            builder: (context, ThemeNotifier notifier, child) {
+          return MaterialApp(
+            theme: notifier.darkTheme ? dark : light,
+            home: Scaffold(
+              body: _children[_currentIndex],
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                currentIndex: _currentIndex,
+                selectedItemColor: Theme.of(context).colorScheme.primary,
+                //selectedItemColor: closetPurple,
+                unselectedItemColor: Theme.of(context).colorScheme.primary,
+                //unselectedItemColor: closetBlack,
+                selectedLabelStyle: Theme.of(context).textTheme.caption,
+                unselectedLabelStyle: Theme.of(context).textTheme.caption,
+                onTap: (value) {
+                  // Respond to item press.
+                  setState(() => _currentIndex = value);
+                  print(_currentIndex);
+                },
+                items: [
+                  BottomNavigationBarItem(
+                    title: Text('Home'),
+                    icon: Icon(Icons.home_outlined),
+                  ),
+                  BottomNavigationBarItem(
+                    title: Text('With People'),
+                    icon: Icon(Icons.grade_outlined),
+                  ),
+                  BottomNavigationBarItem(
+                    title: Text('notification'),
+                    icon: Icon(Icons.notification_important_outlined),
+                  ),
+                  BottomNavigationBarItem(
+                    title: Text('My Page'),
+                    icon: Icon(Icons.perm_identity),
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              title: Text('With People'),
-              icon: Icon(Icons.grade_outlined),
-            ),
-            BottomNavigationBarItem(
-              title: Text('notification'),
-              icon: Icon(Icons.notification_important_outlined),
-            ),
-            BottomNavigationBarItem(
-              title: Text('My Page'),
-              icon: Icon(Icons.perm_identity),
-            ),
-          ],
-        ),
-      ),
-      theme: _closetTheme,
-    );
+            // theme: notifier.darkTheme ? dark, light,
+          );
+        }));
   }
 }
 
