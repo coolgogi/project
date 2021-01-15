@@ -39,15 +39,6 @@ class _myPageState extends State<myPage> {
           automaticallyImplyLeading: false,
         ),
         body: ListView(children: <Widget>[
-          // Consumer<ThemeNotifier>(
-          //   builder: (context, notifier, child) => SwitchListTile(
-          //     title: Text("Dark Mode"),
-          //     onChanged: (value) {
-          //       notifier.toggleTheme();
-          //     },
-          //     value: notifier.darkTheme,
-          //   ),
-          // ),
           Consumer<ThemeNotifier>(
             builder: (context, notifier, child) => SizedBox(
               width: 100,
@@ -71,19 +62,6 @@ class _myPageState extends State<myPage> {
               ),
             ),
           ),
-          // Center(
-          //   child: SizedBox(
-          //     width: 100,
-          //     height: 40,
-          //     child: GestureDetector(
-          //       onTap: _onButtonTap,
-          //       child: FlareActor(
-          //         'assets/switch_daytime.flr',
-          //         animation: _animationName,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Center(
             child: Container(
               child: FlatButton(
