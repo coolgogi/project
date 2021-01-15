@@ -1,15 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'dart:convert';
-import 'dart:typed_data';
-import 'text_style.dart';
-import 'app.dart';
-import 'color.dart';
-
-import 'dart:math';
-
+import 'package:closet/theme/theme.dart';
+import 'package:flutter/material.dart';
+import 'package:animated_widgets/animated_widgets.dart';
+import 'helper/fancy_fab.dart';
+import 'theme/colors.dart';
 
 
 class closet extends StatefulWidget {
@@ -41,24 +37,48 @@ class _closetState extends State<closet>
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
-              backgroundColor: Color(0xFF808080),
+              backgroundColor: Theme
+                  .of(context)
+                  .colorScheme
+                  .background,
               title: Text(
                 "I-Clothes",
                 style: Theme.of(context).textTheme.headline5,
               ),
               actions: <Widget>[
-                IconButton(
-                    icon: Icon(Icons.account_circle), onPressed: () {}),
-              ],
+
+                ShakeAnimatedWidget(
+                  enabled: false,
+                  duration: Duration(milliseconds: 700),
+                  shakeAngle: Rotation.deg(z: 40),
+                  curve: Curves.linear,
+                  child: IconButton(
+                      icon: Icon(Icons.notifications_none_outlined),
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .onSecondary,
+                      onPressed: () {}),
+                ),              ],
               centerTitle: true,
               pinned: true,
               floating: true,
               bottom: TabBar(
-                  indicatorColor: Colors.purple,
-                  labelPadding: const EdgeInsets.only(
-                    bottom: 16,
-                  ),
-                  controller: _tabController,
+                indicatorColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
+                labelColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .onSecondary,
+                labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+
+                labelPadding: const EdgeInsets.only(
+                  bottom: 16,
+                ),
+                controller: _tabController,
                 tabs: [
                   Tab(text: '코디'),
                   Tab(text: '옷장'),
@@ -74,6 +94,7 @@ class _closetState extends State<closet>
           ],
         ),
       ),
+      floatingActionButton: FancyFab(),
     );
   }
   Widget cody() {
