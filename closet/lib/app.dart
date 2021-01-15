@@ -15,16 +15,17 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'login.dart';
+import 'myPage.dart';
 // import 'add.dart';
 // import 'profile.dart';
 // import 'chatList.dart';
 
 import 'package:provider/provider.dart';
 import 'data/join_or_login.dart';
+import 'color.dart';
 
 // TODO: Convert ShrineApp to stateful widget (104)
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,15 +33,17 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       initialRoute: '/login',
       routes: {
-        '/home' : (context) => HomePage(),
+        '/home': (context) => HomePage(),
         // '/add' : (context) => AddProduct(),
         // '/login' : (context) =>LoginPage(),
         // '/chatList': (context) => chatList(),
         // '/profile' : (context) =>Profile(),
-
+        '/login': (context) => LoginPage(),
+        '/myPage': (context) => myPage(),
       },
       onGenerateRoute: _getRoute,
       // TODO: Add a theme (103)
+      // theme: _closetTheme,
     );
   }
 

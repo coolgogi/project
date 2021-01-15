@@ -51,6 +51,15 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 flutter {
@@ -63,7 +72,9 @@ dependencies {
     implementation "com.google.android.material:material:1.1.0"
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-login:[8.1)'
+    implementation "com.google.firebase:firebase-analytics:17.5.0"
+    implementation 'com.facebook.android:facebook-login:[8.1)'
 
 }
 

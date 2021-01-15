@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'data/join_or_login.dart';
 import 'forget_pw.dart';
 import 'google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class LoginPage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -46,6 +47,12 @@ class LoginPage extends StatelessWidget {
                     margin: EdgeInsets.all(size.height * 0.025),
                     child: _googleSignInButton(size, context),
                   ),
+                  Container(
+                    height: 50,
+                    margin: EdgeInsets.all(size.height * 0.025),
+                    child: _facebookSignInButton(size, context),
+                  ),
+
                   Consumer<JoinOrLogin>(
                     builder: (context, joinOrLogin, child) => GestureDetector(
                         onTap: () {
@@ -70,6 +77,45 @@ class LoginPage extends StatelessWidget {
       ],
     ));
   }
+
+  Widget _facebookSignInButton(Size size, BuildContext context) {
+    return IconButton (
+      splashColor: Colors.grey,
+      onPressed: () async {
+        await _signInWithFacebook(context);
+        print("finish!!!!!!!!!!!!!!!");
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => HomePage(
+        //       email: name,
+        //     ),
+        //   ),
+        // );
+      },
+      icon: new Image.asset("assets/kakao_login_medium_narrow.png"),
+
+    );
+  }
+
+  // Example code of how to sign in with Facebook.
+  void _signInWithFacebook(BuildContext context) async {
+    final facebookLogin = FacebookLogin();
+    final result = await facebookLogin.logIn(['email']);
+    try {
+      final AuthCredential credential = FacebookAuthProvider.credential(
+        result.accessToken.token,
+      );
+      final User user = (await _auth.signInWithCredential(credential)).user;
+
+      print("Sign In ${user.uid} with Facebook");
+
+    } catch (e) {
+      print(e);
+      print("Failed to sign in with Facebook: ${e}");
+
+    }
+  }
+
 
   void _register(BuildContext context) async {
     try {
@@ -320,5 +366,81 @@ class LoginPage extends StatelessWidget {
   goToForgetPw(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ForgetPw()));
+  }
+}
+
+
+
+
+
+
+
+class facebookLogin extends StatefulWidget {
+  @override
+  _facebookLoginState createState() => new _facebookLoginState();
+}
+
+class _facebookLoginState extends State<facebookLogin> {
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+  String _message = 'Log in/out by pressing the buttons below.';
+
+  Future<Null> _login() async {
+    final FacebookLoginResult result =
+    await facebookSignIn.logIn(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        _showMessage('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        _showMessage('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        _showMessage('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  Future<Null> _logOut() async {
+    await facebookSignIn.logOut();
+    _showMessage('Logged out.');
+  }
+
+  void _showMessage(String message) {
+    setState(() {
+      _message = message;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(_message),
+              RaisedButton(
+                onPressed: _login,
+                child: Text('Log in'),
+              ),
+              RaisedButton(
+                onPressed: _logOut,
+                child: Text('Logout'),
+              ),
+            ],
+          ),
+        );
+
   }
 }
