@@ -34,7 +34,7 @@ class _request extends State<request> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
-        label: Text('코디 도움받기', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
+        label: Text('코디 도움받기', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary, fontWeight: FontWeight.w600)),
         backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

@@ -79,7 +79,7 @@ class _FancyFabState extends State<FancyFab>
         backgroundColor: Theme.of(context).colorScheme.secondary,
         hoverColor: Theme.of(context).colorScheme.onSecondary,
         onPressed: null,
-        tooltip: 'Image',
+        tooltip: '직접 코디하기',
         child: Text('Self', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
       ),
     );
@@ -91,7 +91,7 @@ class _FancyFabState extends State<FancyFab>
         backgroundColor: Theme.of(context).colorScheme.secondary,
         hoverColor: Theme.of(context).colorScheme.onSecondary,
         onPressed: null,
-        tooltip: 'Inbox',
+        tooltip: 'AI 추천받기',
         child: Text('AI', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
       ),
     );
@@ -102,7 +102,7 @@ class _FancyFabState extends State<FancyFab>
       child: FloatingActionButton(
         backgroundColor: _buttonColor.value,
         onPressed: animate,
-        tooltip: 'Toggle',
+        tooltip: '코디 추가하기',
         child: AnimatedIcon(
           icon: AnimatedIcons.add_event,
           color: OnSecondaryLight,

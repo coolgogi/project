@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:closet/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_widgets/animated_widgets.dart';
 import 'helper/fancy_fab.dart';
-import 'theme/colors.dart';
-
 
 class closet extends StatefulWidget {
   @override
@@ -37,16 +34,15 @@ class _closetState extends State<closet>
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
-              backgroundColor: Theme
-                  .of(context)
-                  .colorScheme
-                  .background,
+              // backgroundColor: Theme
+              //     .of(context)
+              //     .colorScheme
+              //     .background,
               title: Text(
                 "I-Clothes",
                 style: Theme.of(context).textTheme.headline5,
               ),
               actions: <Widget>[
-
                 ShakeAnimatedWidget(
                   enabled: false,
                   duration: Duration(milliseconds: 700),
@@ -83,7 +79,8 @@ class _closetState extends State<closet>
                   Tab(text: '코디'),
                   Tab(text: '옷장'),
                 ],
-              ),            ),
+              ),
+            ),
           ];
         },
         body: TabBarView(

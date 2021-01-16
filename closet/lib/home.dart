@@ -60,10 +60,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                   BottomNavigationBarItem(
                     title: Text('With People'),
-                    icon: Icon(Icons.grade_outlined),
+                    icon: Icon(Icons.question_answer_outlined),
                   ),
                   BottomNavigationBarItem(
-                    title: Text('notification'),
+                    title: Text('Favorite'),
                     icon: Icon(Icons.favorite_outline),
                   ),
                   BottomNavigationBarItem(

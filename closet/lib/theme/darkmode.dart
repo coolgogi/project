@@ -24,10 +24,14 @@ ThemeData _buildClosetTheme_light() {
       onError: OnErrorLight,
       brightness: Brightness.light,
     ),
+    appBarTheme: base.appBarTheme.copyWith(
+      color: BackgroundLight,
+    ),
+    bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
+
+    ),
     scaffoldBackgroundColor: BackgroundLight,
-    cardColor: BackgroundLight,
-    // accentColor: closetBlack,
-    // primaryColor: closetPurple,
+    cardColor: SurfaceLight,
     buttonTheme: base.buttonTheme.copyWith(
       buttonColor: OnSecondaryLight,
       colorScheme: base.colorScheme.copyWith(
@@ -88,10 +92,14 @@ ThemeData _buildClosetTheme_dark() {
     // const OnBackgroundDark = Color(0xFFFFFFFF);
     // const OnSurfaceDark = Color(0xFFFFFFFF);
     // const OnErrorDark = Color(0xFF000000);
-    scaffoldBackgroundColor: BackgroundDark,
-    cardColor: BackgroundDark,
-    // accentColor: closetBlack,
-    // primaryColor: closetPurple,
+    appBarTheme: base.appBarTheme.copyWith(
+      color: BackgroundDark,
+    ),
+    bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
+
+    ),
+    scaffoldBackgroundColor: SurfaceDark,
+    cardColor: BackgroundDark,      // <--- 사진 위 아래 테두리 까망까망한 원인!!!!!!!!!!!!
     buttonTheme: base.buttonTheme.copyWith(
       buttonColor: OnSecondaryDark,
       colorScheme: base.colorScheme.copyWith(
@@ -157,3 +165,14 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
   // );
 }
 
+AppBarTheme _buildClosetAppBarTheme(AppBarTheme base) {
+  return base.copyWith(
+      centerTitle: false,
+      titleTextStyle: base.titleTextStyle.copyWith(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        fontFamily: 'Sansita',
+      ),
+
+  );
+}
