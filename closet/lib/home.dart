@@ -67,8 +67,8 @@ class _HomePageState extends State<HomePage> {
                     icon: Icon(Icons.question_answer_outlined),
                   ),
                   BottomNavigationBarItem(
-                    title: Text('analyze'),
-                    icon: Icon(Icons.analytics),
+                    title: Text('analytics'),
+                    icon: Icon(Icons.donut_small),
                   ),
                   BottomNavigationBarItem(
                     title: Text('calendar'),
