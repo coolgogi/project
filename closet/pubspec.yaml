@@ -32,7 +32,9 @@ dependencies:
   flare_flutter: ^2.0.6
   geolocator: ^6.1.13
   http: ^0.12.2
-
+  animated_widgets: ^1.0.6
+  animated_icon_button: ^0.3.0
+  animate_icons: ^1.0.0
 
   flutter:
     sdk: flutter
@@ -83,8 +85,7 @@ flutter:
     - assets/sho1.JPG
     - assets/sho2.JPG
     - assets/switch_daytime.flr
-
-
+    - assets/sample.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
@@ -114,3 +115,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+

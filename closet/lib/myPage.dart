@@ -14,15 +14,12 @@ class _myPageState extends State<myPage> {
   bool dark = false;
 
   String _animationName = 'day_idle';
-
   void _onButtonTap() {
-    setState(() async{
+    setState(() {
       if (_animationName == 'day_idle' || _animationName == 'switch_day') {
         _animationName = 'switch_night';
-        _animationName = 'night_idle';
       } else {
         _animationName = 'switch_day';
-        _animationName == 'day_idle';
       }
     });
   }
@@ -31,7 +28,7 @@ class _myPageState extends State<myPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF808080),
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: Text(
             "I-Clothes : my Page",
             style: Theme.of(context).textTheme.headline5,
@@ -42,66 +39,37 @@ class _myPageState extends State<myPage> {
           automaticallyImplyLeading: false,
         ),
         body: ListView(children: <Widget>[
-          // Consumer<ThemeNotifier>(
-          //   builder: (context, notifier, child) => SwitchListTile(
-          //     title: Text("Dark Mode"),
-          //     onChanged: (value) {
-          //       notifier.toggleTheme();
-          //     },
-          //     value: notifier.darkTheme,
-          //   ),
-          // ),
-          Row(
-            children: [
-
-              Container(
-                child: IconButton(
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                    },
-                    icon: Icon(Icons.logout)),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(263, 0, 0, 0),
-                child: Consumer<ThemeNotifier>(
-                  builder: (context, notifier, child) => SizedBox(
-                    width: 100,
-                    height: 40,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (_animationName == 'day_idle' ||
-                              _animationName == 'switch_day') {
-                             _animationName = 'switch_night';
-                          } else {
-                            _animationName = 'switch_day';
-                          }
-                          notifier.toggleTheme();
-                        });
-                      },
-                      child: FlareActor(
-                        'assets/switch_daytime.flr',
-                        animation: _animationName,
-                      ),
-                    ),
-                  ),
+          Consumer<ThemeNotifier>(
+            builder: (context, notifier, child) => SizedBox(
+              width: 100,
+              height: 40,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (_animationName == 'day_idle' ||
+                        _animationName == 'switch_day') {
+                      _animationName = 'switch_night';
+                    } else {
+                      _animationName = 'switch_day';
+                    }
+                    notifier.toggleTheme();
+                  });
+                },
+                child: FlareActor(
+                  'assets/switch_daytime.flr',
+                  animation: _animationName,
                 ),
               ),
-              // Center(
-              //   child: SizedBox(
-              //     width: 100,
-              //     height: 40,
-              //     child: GestureDetector(
-              //       onTap: _onButtonTap,
-              //       child: FlareActor(
-              //         'assets/switch_daytime.flr',
-              //         animation: _animationName,
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
-            ],
+            ),
+          ),
+          Center(
+            child: Container(
+              child: FlatButton(
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                  child: Text("Logout")),
+            ),
           ),
         ]));
   }
