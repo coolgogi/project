@@ -8,6 +8,8 @@ import 'request.dart';
 import 'myPage.dart';
 import 'theme/colors.dart';
 import 'theme/darkmode.dart';
+import 'calendar.dart';
+import 'my.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({this.email});
@@ -26,8 +28,8 @@ class _HomePageState extends State<HomePage> {
     List<Widget> _children = [
       closet(),
       request(),
-      analyze(),
-      myPage(),
+      Calendar(),
+      My(),
     ];
     return ChangeNotifierProvider(
       create: (_) => ThemeNotifier(),
