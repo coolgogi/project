@@ -31,7 +31,7 @@ class _myPageState extends State<myPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF808080),
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: Text(
             "I-Clothes : my Page",
             style: Theme.of(context).textTheme.headline5,
