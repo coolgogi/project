@@ -54,7 +54,7 @@ class _analyze extends State<analyze> {
                           child: Text(
                             "${result["label"]} -  ${result["confidence"].toStringAsFixed(2)}",
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold),
                           ),
