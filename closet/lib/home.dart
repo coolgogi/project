@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     List<Widget> _children = [
       closet(),
-      request(),
+      analyze(),
       Calendar(),
       My(),
     ];

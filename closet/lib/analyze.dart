@@ -1,256 +1,108 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:tflite/tflite.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:animated_widgets/animated_widgets.dart';
-import 'helper/fancy_fab.dart';
 
 class analyze extends StatefulWidget {
   @override
-  _analyzeState createState() => _analyzeState();
+  _analyze createState() => new _analyze();
 }
 
-class _analyzeState extends State<analyze> with SingleTickerProviderStateMixin {
-  TabController _tabController;
+class _analyze extends State<analyze> {
+  File _image;
+  List _results;
 
   @override
   void initState() {
-    _tabController = TabController(
-      initialIndex: 0,
-      length: 2,
-      vsync: this,
-    );
     super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-
-    return Scaffold(
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              // backgroundColor: Theme
-              //     .of(context)
-              //     .colorScheme
-              //     .background,
-              title: Text(
-                "I-Clothes",
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              actions: <Widget>[
-                ShakeAnimatedWidget(
-                  enabled: false,
-                  duration: Duration(milliseconds: 700),
-                  shakeAngle: Rotation.deg(z: 40),
-                  curve: Curves.linear,
-                  child: IconButton(
-                      icon: Icon(Icons.notifications_none_outlined),
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      onPressed: () {}),
-                ),
-              ],
-              centerTitle: false,
-              pinned: true,
-              floating: true,
-              bottom: TabBar(
-                indicatorColor: Theme.of(context).colorScheme.primary,
-                labelColor: Theme.of(context).colorScheme.onPrimary,
-                labelStyle: TextStyle(fontWeight: FontWeight.w600),
-                unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
-                labelPadding: const EdgeInsets.only(
-                  bottom: 16,
-                ),
-                controller: _tabController,
-                tabs: [
-                  Tab(text: '코디'),
-                  Tab(text: '옷장'),
-                ],
-              ),
-            ),
-          ];
-        },
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            TabA(),
-            cody(),
-          ],
-        ),
-      ),
-      floatingActionButton: FancyFab(),
-    );
-  }
-
-  Widget cody() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(4, 20, 330, 0),
-            child: Text('상의'),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 0.0),
-            height: 200.0,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                Container(
-                  width: 160.0,
-                  height: 160,
-                  child: Image.asset('assets/top1.JPG'),
-                ),
-                Container(
-                  width: 160.0,
-                  height: 160,
-                  child: Image.asset('assets/top2.JPG'),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(4, 0, 330, 0),
-            child: Text('하의'),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 0.0),
-            height: 200.0,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                Container(
-                  width: 160.0,
-                  height: 160,
-                  child: Image.asset('assets/bottom1.JPG'),
-                ),
-                Container(
-                  width: 160.0,
-                  height: 160,
-                  child: Image.asset('assets/bottom2.JPG'),
-                ),
-                Container(
-                  width: 160.0,
-                  height: 160,
-                  child: Image.asset('assets/bottom3.JPG'),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(4, 0, 330, 0),
-            child: Text('신발'),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 0.0),
-            height: 200.0,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                Container(
-                  width: 160.0,
-                  height: 160,
-                  child: Image.asset('assets/sho1.JPG'),
-                ),
-                Container(
-                  width: 160.0,
-                  height: 160,
-                  child: Image.asset('assets/sho2.JPG'),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+    loadModel();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
   }
-}
 
-class TabA extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      child: GridView.count(
-          crossAxisCount: 2,
-          padding: EdgeInsets.all(16.0),
-          childAspectRatio: 8.0 / 9.0,
-          children: <Widget>[
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi1.jpg'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Image classification'),
+      ),
+      body: Column(
+        children: [
+          if (_image != null)
+            Container(margin: EdgeInsets.all(10), child: Image.file(_image))
+          else
+            Container(
+              margin: EdgeInsets.all(40),
+              child: Opacity(
+                opacity: 0.6,
+                child: Center(
+                  child: Text('No Image Selected!'),
+                ),
               ),
             ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi2.jpg'),
-              ),
+          SingleChildScrollView(
+            child: Column(
+              children: _results != null
+                  ? _results.map((result) {
+                      return Card(
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            "${result["label"]} -  ${result["confidence"].toStringAsFixed(2)}",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      );
+                    }).toList()
+                  : [],
             ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi3.jpg'),
-              ),
-            ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi9.jpg'),
-              ),
-            ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi5.jpg'),
-              ),
-            ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi6.jpg'),
-              ),
-            ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi7.jpg'),
-              ),
-            ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi8.jpg'),
-              ),
-            ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi9.jpg'),
-              ),
-            ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi1.jpg'),
-              ),
-            ),
-            Card(
-              child: AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.asset('assets/codi2.jpg'),
-              ),
-            ),
-          ]),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: pickAnImage,
+        tooltip: 'Select Image',
+        child: Icon(Icons.image),
+      ),
     );
+  }
+
+  Future loadModel() async {
+    Tflite.close();
+    String res;
+    res = await Tflite.loadModel(
+      model: "assets/ml/mobilenet_v1_1.0_224.tflite",
+      labels: "assets/ml/mobilenet_v1_1.0_224.txt",
+    );
+    print(res);
+  }
+
+  Future pickAnImage() async {
+    // pick image and...
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    // Perform image classification on the selected image.
+    imageClassification(image);
+  }
+
+  Future imageClassification(File image) async {
+    // Run tensorflowlite image classification model on the image
+    final List results = await Tflite.runModelOnImage(
+      path: image.path,
+      numResults: 6,
+      threshold: 0.05,
+      imageMean: 127.5,
+      imageStd: 127.5,
+    );
+    setState(() {
+      _results = results;
+      _image = image;
+    });
   }
 }
