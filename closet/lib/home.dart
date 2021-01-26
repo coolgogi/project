@@ -1,3 +1,4 @@
+import 'package:closet/analyze.dart';
 import 'package:closet/myPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     _children = [
       closet(),
       request(),
+      analyze(),
       closet(),
       myPage(),
     ];
@@ -43,9 +45,11 @@ class _HomePageState extends State<HomePage> {
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 currentIndex: _currentIndex,
-                selectedItemColor: notifier.darkTheme ? PrimaryColorDark : PrimaryColorLight,
+                selectedItemColor:
+                    notifier.darkTheme ? PrimaryColorDark : PrimaryColorLight,
                 //unselectedItemColor: Theme.of(context).colorScheme.onSecondary,
-                unselectedItemColor: notifier.darkTheme ? SecondaryDark : SecondaryLight,
+                unselectedItemColor:
+                    notifier.darkTheme ? SecondaryDark : SecondaryLight,
                 selectedLabelStyle: Theme.of(context).textTheme.caption,
                 unselectedLabelStyle: Theme.of(context).textTheme.caption,
                 onTap: (value) {
@@ -63,8 +67,12 @@ class _HomePageState extends State<HomePage> {
                     icon: Icon(Icons.question_answer_outlined),
                   ),
                   BottomNavigationBarItem(
-                    title: Text('Favorite'),
-                    icon: Icon(Icons.favorite_outline),
+                    title: Text('analyze'),
+                    icon: Icon(Icons.analytics),
+                  ),
+                  BottomNavigationBarItem(
+                    title: Text('calendar'),
+                    icon: Icon(Icons.calendar_today),
                   ),
                   BottomNavigationBarItem(
                     title: Text('My Page'),
