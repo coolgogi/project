@@ -6,6 +6,7 @@ import 'package:animated_widgets/animated_widgets.dart';
 import 'package:provider/provider.dart';
 import 'helper/fancy_fab.dart';
 import 'helper/bloc.dart';
+import 'data/closetTabPage.dart';
 
 class closet extends StatefulWidget {
   @override
@@ -21,8 +22,9 @@ class _closetState extends State<closet> {
         length: 6,
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.background,
             title: Text(
-              '클로데이',
+              "클로데이",
               style: Theme.of(context).textTheme.headline5,
             ),
             actions: [
@@ -34,6 +36,7 @@ class _closetState extends State<closet> {
                 ),
               ),
             ],
+
             bottom: TabBar(
               isScrollable: true,
               indicatorColor: Theme.of(context).colorScheme.primary,
@@ -53,20 +56,12 @@ class _closetState extends State<closet> {
           ),
           body: TabBarView(
             children: [
-              // Cody(),
-              // Outers(),
-              // Top(),
-              // Pants(),
-              // Shoes(),
-              // Accessories(),
-              // TabA(),
-              // cody(),
-              Icon(Icons.directions_bike),
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_bike),
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_transit),
-              Icon(Icons.directions_bike),
+              cody(),
+              outers(),
+              tops(),
+              pants(),
+              shoes(),
+              accessories(),
             ],
           ),
           floatingActionButton: FancyFab(),
@@ -75,18 +70,7 @@ class _closetState extends State<closet> {
   }
 }
 
-// class Cody extends StatefulWidget {
-//   @override
-//   _CodyState createState() => _CodyState();
-// }
-//
-// class _CodyState extends State<Cody> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return GridView(
-//         gridDelegate: gridDelegate);
-//   }
-// }
+
 
 
 
