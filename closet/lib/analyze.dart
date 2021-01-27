@@ -28,7 +28,10 @@ class _analyze extends State<analyze> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image classification'),
+        title: Text(
+          'Image classification',
+          style: Theme.of(context).textTheme.headline5,
+        ),
       ),
       body: Column(
         children: [
