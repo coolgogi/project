@@ -40,6 +40,9 @@ dependencies:
   tflite: ^1.1.1
   cached_network_image: ^2.5.0
   unicorndial: ^1.1.5
+  flutter_search_bar: ^2.1.0
+  table_calendar: ^2.3.3
+
 
   flutter:
     sdk: flutter
