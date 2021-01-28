@@ -1,9 +1,17 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unicorndial/unicorndial.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:path_provider/path_provider.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final String UserEmail = _auth.currentUser.email;
 
 class analyze extends StatefulWidget {
   @override
@@ -61,7 +69,9 @@ class _analyze extends State<analyze> {
       body: Column(
         children: [
           if (_image != null)
-            Container(margin: EdgeInsets.all(10), child: Image.file(_image))
+            Expanded(
+                child: Container(
+                    margin: EdgeInsets.all(10), child: Image.file(_image)))
           else
             Container(
               margin: EdgeInsets.all(40),
@@ -72,24 +82,26 @@ class _analyze extends State<analyze> {
                 ),
               ),
             ),
-          SingleChildScrollView(
-            child: Column(
-              children: _results != null
-                  ? _results.map((result) {
-                      return Card(
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          child: Text(
-                            "${result["label"]} -  ${result["confidence"].toStringAsFixed(2)}",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: _results != null
+                    ? _results.map((result) {
+                        return Card(
+                          child: Container(
+                            margin: EdgeInsets.all(10),
+                            child: Text(
+                              "${result["label"]} -  ${result["confidence"].toStringAsFixed(2)}",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
-                        ),
-                      );
-                    }).toList()
-                  : [],
+                        );
+                      }).toList()
+                    : [],
+              ),
             ),
           ),
         ],
@@ -100,11 +112,6 @@ class _analyze extends State<analyze> {
           orientation: UnicornOrientation.VERTICAL,
           parentButton: Icon(Icons.add),
           childButtons: childButtons),
-      // FloatingActionButton(
-      //   onPressed: pickAnImage,
-      //   tooltip: 'Select Image',
-      //   child: Icon(Icons.image),
-      // ),
     );
   }
 
@@ -120,6 +127,7 @@ class _analyze extends State<analyze> {
 
   Future pickAnImageFromGallery() async {
     // pick image and...
+    // ignore: deprecated_member_use
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     // Perform image classification on the selected image.
     imageClassification(image);
@@ -127,12 +135,16 @@ class _analyze extends State<analyze> {
 
   Future pickAnImageFromCamera() async {
     // pick image and...
+    // ignore: deprecated_member_use
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     // Perform image classification on the selected image.
     imageClassification(image);
   }
 
   Future imageClassification(File image) async {
+    print("====================================");
+    print("[" + UserEmail + "]");
+    print("====================================");
     // Run tensorflowlite image classification model on the image
     final List results = await Tflite.runModelOnImage(
       path: image.path,
