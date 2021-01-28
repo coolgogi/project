@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:unicorndial/unicorndial.dart';
 
 class analyze extends StatefulWidget {
   @override
@@ -26,6 +27,30 @@ class _analyze extends State<analyze> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
+    var childButtons = List<UnicornButton>();
+
+    childButtons.add(UnicornButton(
+        hasLabel: true,
+        labelText: "Gallery",
+        currentButton: FloatingActionButton(
+            heroTag: "Gallery",
+            backgroundColor: Colors.redAccent,
+            mini: true,
+            child: Icon(Icons.image),
+            onPressed: pickAnImageFromGallery)));
+
+    childButtons.add(UnicornButton(
+        hasLabel: true,
+        labelText: "Camera",
+        currentButton: FloatingActionButton(
+          heroTag: "Camera",
+          backgroundColor: Colors.greenAccent,
+          mini: true,
+          child: Icon(Icons.camera),
+          onPressed: pickAnImageFromCamera,
+        )));
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -69,11 +94,17 @@ class _analyze extends State<analyze> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: pickAnImage,
-        tooltip: 'Select Image',
-        child: Icon(Icons.image),
-      ),
+      floatingActionButton: UnicornDialer(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
+          parentButtonBackground: Colors.redAccent,
+          orientation: UnicornOrientation.VERTICAL,
+          parentButton: Icon(Icons.add),
+          childButtons: childButtons),
+      // FloatingActionButton(
+      //   onPressed: pickAnImage,
+      //   tooltip: 'Select Image',
+      //   child: Icon(Icons.image),
+      // ),
     );
   }
 
@@ -87,9 +118,16 @@ class _analyze extends State<analyze> {
     print(res);
   }
 
-  Future pickAnImage() async {
+  Future pickAnImageFromGallery() async {
     // pick image and...
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    // Perform image classification on the selected image.
+    imageClassification(image);
+  }
+
+  Future pickAnImageFromCamera() async {
+    // pick image and...
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
     // Perform image classification on the selected image.
     imageClassification(image);
   }
