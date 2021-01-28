@@ -38,6 +38,26 @@ class _HomePageState extends State<HomePage> {
           return MaterialApp(
             theme: notifier.darkTheme? dark_theme : light_theme,
             home: Scaffold(
+              // appBar: AppBar(
+              //   backgroundColor: notifier.darkTheme? BackgroundDark : BackgroundLight,
+              //   title: Text(
+              //     "클로데이",
+              //     style: Theme.of(context).textTheme.headline5.copyWith(
+              //       fontSize: 18,
+              //       fontWeight: FontWeight.w600,
+              //       fontFamily: 'Sansita',
+              //     ),
+              //   ),
+              //   actions: [
+              //     Container(
+              //       padding: EdgeInsets.only(right: 12.0),
+              //       child: Icon(
+              //           Icons.notifications_none_outlined,
+              //           color:Theme.of(context).colorScheme.onSurface
+              //       ),
+              //     ),
+              //   ],
+              // ),
               body: _children[_currentIndex],
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,

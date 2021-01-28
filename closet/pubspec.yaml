@@ -86,8 +86,8 @@ flutter:
     - assets/sho1.JPG
     - assets/sho2.JPG
     - assets/switch_daytime.flr
-    - assets/sample.jpg
-    - assets/profile.png
+    - assets/sample.png
+    - assets/profile.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

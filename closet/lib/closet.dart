@@ -8,6 +8,82 @@ import 'helper/fancy_fab.dart';
 import 'helper/bloc.dart';
 import 'data/closetTabPage.dart';
 
+// class closet extends StatefulWidget {
+//   @override
+//   _closetState createState() => _closetState();
+// }
+//
+// class _closetState extends State<closet> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final Size size = MediaQuery.of(context).size;
+//
+//     return Scaffold(
+//       body: SingleChildScrollView(
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.stretch,
+//           children: <Widget>[
+//             SizedBox(
+//               height: size.height * 0.10,
+//               child: Text(
+//                 '날씨',
+//                 textAlign: TextAlign.center,
+//               ),
+//             ),
+//             DefaultTabController(
+//               length: 6,
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.stretch,
+//                 children: <Widget>[
+//                   Container(
+//                     decoration: BoxDecoration(
+//                         border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5))
+//                     ),
+//                     child: TabBar(
+//                       isScrollable: true,
+//                       indicatorColor: Theme.of(context).colorScheme.primary,
+//                       labelColor: Theme.of(context).colorScheme.primary,
+//                       unselectedLabelColor: Theme.of(context).colorScheme.onPrimary,
+//                       labelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+//                       unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+//                       tabs: [
+//                         Tab(text: '코디'),
+//                         Tab(text: '아우터'),
+//                         Tab(text: '상의'),
+//                         Tab(text: '하의'),
+//                         Tab(text: '신발'),
+//                         Tab(text: '악세사리'),
+//                       ],
+//                     ),
+//                   ),
+//                   // Expanded(
+//                   //   child: TabBarView(
+//                   //         children: <Widget>[
+//                   //           Icon(Icons.airline_seat_flat),
+//                   //           Icon(Icons.airline_seat_flat),
+//                   //           Icon(Icons.airline_seat_flat),
+//                   //           Icon(Icons.airline_seat_flat),
+//                   //           Icon(Icons.airline_seat_flat),
+//                   //           Icon(Icons.airline_seat_flat),
+//                             cody(),
+//                             outers(),
+//                             tops(),
+//                             pants(),
+//                             shoes(),
+//                             accessories()
+//                   //         ]),
+//                   // ),
+//                 ],
+//               ),
+//             )
+//           ],
+//         )
+//       ),
+//       floatingActionButton: FancyFab(),
+//     );
+//   }
+// }
+
 class closet extends StatefulWidget {
   @override
   _closetState createState() => _closetState();
@@ -21,52 +97,68 @@ class _closetState extends State<closet> {
     return DefaultTabController(
         length: 6,
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            title: Text(
-              "클로데이",
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            actions: [
-              Container(
-                width: size.width * 0.15,
-                child: Icon(
-                    Icons.notifications_none_outlined,
-                    color:Theme.of(context).colorScheme.onSurface
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(size.height * 0.14),
+                  child: AppBar(
+                    title: Text(
+                      'CloDay',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    actions: [
+                      Container(
+                        width: size.width * 0.15,
+                        child: Icon(
+                            Icons.notifications_none_outlined,
+                            color:Theme.of(context).colorScheme.onSurface
+                        ),
+                      ),
+                    ],
+                    bottom: TabBar(
+                      isScrollable: true,
+                      indicatorColor: Theme.of(context).colorScheme.primary,
+                      labelColor: Theme.of(context).colorScheme.primary,
+                      unselectedLabelColor: Theme.of(context).colorScheme.onPrimary,
+                      labelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+                      unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+                      tabs: [
+                        Tab(text: '코디'),
+                        Tab(text: '아우터'),
+                        Tab(text: '상의'),
+                        Tab(text: '하의'),
+                        Tab(text: '신발'),
+                        Tab(text: '악세사리'),
+                      ],
+                    ),
+                  ),
                 ),
+                body: Column(
+                  children: [
+                    Container(
+                      child: SizedBox(
+                        height: size.height * 0.10,
+                        child: Text(
+                          '날씨',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          cody(),
+                          outers(),
+                          tops(),
+                          pants(),
+                          shoes(),
+                          accessories()
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                floatingActionButton: FancyFab(),
               ),
-            ],
-
-            bottom: TabBar(
-              isScrollable: true,
-              indicatorColor: Theme.of(context).colorScheme.primary,
-              labelColor: Theme.of(context).colorScheme.primary,
-              unselectedLabelColor: Theme.of(context).colorScheme.onPrimary,
-              labelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
-              unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
-              tabs: [
-                Tab(text: '코디'),
-                Tab(text: '아우터'),
-                Tab(text: '상의'),
-                Tab(text: '하의'),
-                Tab(text: '신발'),
-                Tab(text: '악세사리'),
-              ],
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              cody(),
-              outers(),
-              tops(),
-              pants(),
-              shoes(),
-              accessories(),
-            ],
-          ),
-          floatingActionButton: FancyFab(),
-        ),
-      );
+    );
   }
 }
 
