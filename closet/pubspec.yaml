@@ -36,6 +36,10 @@ dependencies:
   animated_icon_button: ^0.3.0
   animate_icons: ^1.0.0
   cell_calendar: ^0.3.0
+  image: ^2.1.4
+  tflite: ^1.1.1
+  cached_network_image: ^2.5.0
+  unicorndial: ^1.1.5
 
   flutter:
     sdk: flutter
@@ -88,6 +92,9 @@ flutter:
     - assets/switch_daytime.flr
     - assets/sample.png
     - assets/profile.jpg
+    - assets/ml/mobilenet_v1_1.0_224.txt
+    - assets/ml/mobilenet_v1_1.0_224.tflite
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -115,7 +122,6 @@ flutter:
       fonts:
         - asset: assets/fonts/Sansita-ExtraBoldItalic.ttf
           weight: 800
-  #
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
