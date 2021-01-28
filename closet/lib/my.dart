@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,14 +15,107 @@ class _MyState extends State<My>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      appBar: AppBar(
+        title: Text('마이페이지',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,),),),
       body:Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal:20),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal:0),
         child:ListView(
           children: <Widget>[
-            imageProfile(),
-            SizedBox(height:20),
+            //imageProfile(),
+            ListTile(
+              title: Text('NICkNAME님 안녕하세요!'),
+              subtitle: Text('NICKNAME@아이디'),
+              leading: CircleAvatar(
+                backgroundImage:_imageFile == null
+                    ?AssetImage('assets/profile.jpg')
+                    :FileImage(File(_imageFile.path)),
+              ),
+            ),
+            const Divider(
+              color: Colors.grey,
+              height: 10,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+            ),
+            ListTile(
+              title: Text('회원정보 수정'),
+            ),
+            ListTile(
+              title: Text('관심 스타일 설정'),
+            ),
+            ListTile(
+              title: Text('성별 설정'),
+            ),
+            ListTile(
+              title: Text('로그아웃'),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+              },
+            ),
+            ListTile(
+              title: Text('회원탈퇴'),
+            ),
+            const Divider(
+              color: Colors.grey,
+              height: 10,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+            ),
+            ListTile(
+              title: Text('서비스 설정',
+                style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.grey ),),
+            ),
+            ListTile(
+              title: Text('실험실'),
+            ),
+            ListTile(
+              title: Text('설정'),
+            ),
+            const Divider(
+              color: Colors.grey,
+              height: 10,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+            ),
+            ListTile(
+              title: Text('고객센터',
+                style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.grey ),),
+            ),
+            ListTile(
+              title: Text('공지사항'),
+            ),
+            ListTile(
+              title: Text('앱 문의 건의'),
+            ),
+
+
+            /*
+            //SizedBox(height:20),
+
            // nameTextField(),
-            SizedBox(height:20),
+            //SizedBox(height:20),
+
+            ListTile(
+              //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
+              title: Text('내 정보'),
+                //onTap: () { /* react to the tile being tapped */ }
+            ),
+            ListTile(
+              title: Text('서비스 설정'),
+            ),
+            ListTile(
+              title: Text('고객센터'),
+            )
+             */
+
+
           ],
 
         )
@@ -30,6 +123,37 @@ class _MyState extends State<My>{
     );
   }
 
+  Widget imageProfile(){
+    return Center(
+        child:Stack(
+          children: <Widget>[
+            CircleAvatar(
+              radius:80,
+              backgroundImage:_imageFile == null
+                  ?AssetImage('assets/profile.jpg')
+                  :FileImage(File(_imageFile.path)),
+            ),
+            Positioned(
+              bottom:20,
+              right:20,
+              child: InkWell(
+                  onTap:(){
+                    showModalBottomSheet(context: context, builder: ((builder) => bottomSheet()));
+                  },
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Colors.black,
+                    size:40,
+                  )
+              ),
+            )
+          ],
+        )
+    );
+  }
+
+
+  /*
   Widget imageProfile(){
     return Center(
       child:Stack(
@@ -58,6 +182,34 @@ class _MyState extends State<My>{
       )
     );
   }
+
+   */
+
+  Widget nameTextField(){
+    return TextFormField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color:Colors.black,
+            width:2,
+          ),
+        ),
+        prefixIcon: Icon(
+          Icons.person,
+          color: Colors.black,
+        ),
+        labelText: 'Name',
+        hintText: 'Input your name'
+      ),
+    );
+  }
+
+
   Widget bottomSheet(){
     return Container(
       height:100,

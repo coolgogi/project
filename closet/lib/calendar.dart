@@ -1,22 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:cell_calendar/cell_calendar.dart';
 import 'sample_event.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 
-class Calendar extends StatelessWidget {
 
 
+class Calendar extends StatefulWidget {
+  @override
+  _CalendarState createState() => new _CalendarState();
+}
+
+class _CalendarState extends State<Calendar> {
+  SearchBar searchBar;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  AppBar buildAppBar(BuildContext context) {
+    return new AppBar(
+        iconTheme: IconThemeData(
+            color: Colors.black
+        ),
+        title: new Text('Calendar', style: TextStyle(
+            color: Colors.black
+        )),
+        actions: [searchBar.getSearchAction(context)]);
+  }
+
+  void onSubmitted(String value) {
+    setState(() => _scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text('You wrote $value!'))));
+  }
+
+  _CalendarState() {
+    searchBar = new SearchBar(
+        inBar: false,
+        buildDefaultAppBar: buildAppBar,
+        setState: setState,
+        onSubmitted: onSubmitted,
+        onCleared: () {
+          print("cleared");
+        },
+        onClosed: () {
+          print("closed");
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      resizeToAvoidBottomInset : false,
+      appBar: searchBar.build(context),
+      key: _scaffoldKey,
+      body: CalendarCom(),
+    );
+  }
+}
+
+class CalendarCom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _sampleEvents = sampleEvents();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('calendar'),
-      ),
-      body: CellCalendar(
+    return CellCalendar(
         events: _sampleEvents,
         daysOfTheWeekBuilder: (dayIndex) {
-          final labels = ["S", "M", "T", "W", "T", "F", "S"];
+          final labels = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
           return Padding(
             padding: const EdgeInsets.only(bottom: 4.0),
             child: Text(
@@ -34,7 +81,7 @@ class Calendar extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "$month, $year",
+              "$year년 $month월",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -77,7 +124,7 @@ class Calendar extends StatelessWidget {
           /// Called when the page was changed
           /// Fetch additional events by using the range between [firstDate] and [lastDate] if you want
         },
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      ); // This trailing comma makes auto-formatting nicer for build methods.
+
   }
 }

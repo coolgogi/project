@@ -36,6 +36,8 @@ dependencies:
   animated_icon_button: ^0.3.0
   animate_icons: ^1.0.0
   cell_calendar: ^0.3.0
+  flutter_search_bar: ^2.1.0
+  table_calendar: ^2.3.3
 
   flutter:
     sdk: flutter
