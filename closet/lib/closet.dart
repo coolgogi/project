@@ -1,3 +1,4 @@
+import 'package:closet/data/weather.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'helper/fancy_fab.dart';
 import 'helper/bloc.dart';
 import 'data/closetTabPage.dart';
+import 'location.dart';
 
 // class closet extends StatefulWidget {
 //   @override
@@ -83,16 +85,49 @@ import 'data/closetTabPage.dart';
 //     );
 //   }
 // }
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:weather/weather.dart';
+import 'data/weather.dart';
+
 
 class closet extends StatefulWidget {
+  // closet({@required this.weatherData});
+
+  // final WeatherData weatherData;
+
   @override
   _closetState createState() => _closetState();
 }
 
 class _closetState extends State<closet> {
+  int temperature;
+  Icon weatherDisplayIcon;
+  AssetImage backgroundImage;
+
+  // void updateWeatherInfo(WeatherData weatherData) {
+  //   setState(() {
+  //     temperature = weatherData.currentTemperature.round();
+  //     WeatherDisplayData weatherDisplayData =
+  //         weatherData.getWeatherDisplayData();
+  //     backgroundImage = weatherDisplayData.weatherImage;
+  //     weatherDisplayIcon = weatherDisplayData.weatherIcon;
+  //   });
+  // }
+
+  // @override
+  // void initStata() {
+  //   super.initState();
+  //   updateWeatherInfo(widget.weatherData);
+  //   WeatherData().getCurrentTemperature();
+  // }
+
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    // weatherBar();
+    // weather();
 
     return DefaultTabController(
         length: 6,
@@ -136,12 +171,14 @@ class _closetState extends State<closet> {
                     Container(
                       child: SizedBox(
                         height: size.height * 0.10,
-                        child: Text(
-                          '날씨',
-                          textAlign: TextAlign.center,
+                        child: Column(
+                          children: <Widget>[
+                            weatherBar(),
+                          ],
                         ),
                       ),
                     ),
+
                     Expanded(
                       child: TabBarView(
                         children: [
