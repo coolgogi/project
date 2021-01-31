@@ -163,10 +163,10 @@ import 'package:image_picker/image_picker.dart';
 
 class WeatherData {
   final String name;
-  final double temp;
-  final double temp_max;
-  final double temp_min;
-  final double feels_like;
+  final num temp;
+  final num temp_max;
+  final num temp_min;
+  final num feels_like;
   final int humidity;
 
 
