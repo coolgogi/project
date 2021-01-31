@@ -42,6 +42,11 @@ dependencies:
   tflite: ^1.1.1
   font_awesome_flutter: ^8.11.0
   weather: ^1.2.4
+  cached_network_image: ^2.5.0
+  unicorndial: ^1.1.5
+  file_picker: ^2.0.11
+  flutter_search_bar: ^2.1.0
+  table_calendar: ^2.3.3
 
   flutter:
     sdk: flutter
@@ -96,6 +101,7 @@ flutter:
     - assets/profile.jpg
     - assets/ml/mobilenet_v1_1.0_224.txt
     - assets/ml/mobilenet_v1_1.0_224.tflite
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

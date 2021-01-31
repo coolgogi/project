@@ -16,7 +16,7 @@ class _myPageState extends State<myPage> {
   String _animationName = 'day_idle';
 
   void _onButtonTap() {
-    setState(() async{
+    setState(() async {
       if (_animationName == 'day_idle' || _animationName == 'switch_day') {
         _animationName = 'switch_night';
         _animationName = 'night_idle';
@@ -42,10 +42,8 @@ class _myPageState extends State<myPage> {
           automaticallyImplyLeading: false,
         ),
         body: ListView(children: <Widget>[
-
           Row(
             children: [
-
               Container(
                 child: IconButton(
                     onPressed: () {
@@ -64,7 +62,7 @@ class _myPageState extends State<myPage> {
                         setState(() {
                           if (_animationName == 'day_idle' ||
                               _animationName == 'switch_day') {
-                             _animationName = 'switch_night';
+                            _animationName = 'switch_night';
                           } else {
                             _animationName = 'switch_day';
                           }
@@ -79,10 +77,7 @@ class _myPageState extends State<myPage> {
                   ),
                 ),
               ),
-
-
             ],
-
           ),
         ]));
   }
