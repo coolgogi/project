@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,10 +10,13 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:path_provider/path_provider.dart';
+import 'upload.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final String UserEmail = _auth.currentUser.email;
 
+// ignore: camel_case_types
 class analyze extends StatefulWidget {
   @override
   _analyze createState() => new _analyze();
@@ -31,6 +35,11 @@ class _analyze extends State<analyze> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void handleUploadType() async {
+    PickedFile file = await ImagePicker().getImage(source: ImageSource.gallery);
+    // firebase_storage.UploadTask task = await uploadFile(file);
   }
 
   @override
@@ -100,6 +109,7 @@ class _analyze extends State<analyze> {
                           ),
                         );
                       }).toList()
+                    // })
                     : [],
               ),
             ),
@@ -136,15 +146,12 @@ class _analyze extends State<analyze> {
   Future pickAnImageFromCamera() async {
     // pick image and...
     // ignore: deprecated_member_use
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    File image = await ImagePicker.pickImage(source: ImageSource.camera);
     // Perform image classification on the selected image.
     imageClassification(image);
   }
 
   Future imageClassification(File image) async {
-    print("====================================");
-    print("[" + UserEmail + "]");
-    print("====================================");
     // Run tensorflowlite image classification model on the image
     final List results = await Tflite.runModelOnImage(
       path: image.path,
@@ -153,9 +160,60 @@ class _analyze extends State<analyze> {
       imageMean: 127.5,
       imageStd: 127.5,
     );
+    uploadFile(image);
     setState(() {
       _results = results;
       _image = image;
     });
+    String _label = results.first["label"];
+
+    CollectionReference clothes = FirebaseFirestore.instance
+        .collection('users')
+        .doc(UserEmail)
+        .collection("closet");
+
+    var temp = await Firestore.instance
+        .collection('user')
+        .doc(UserEmail)
+        .collection("closet")
+        .doc("clothes")
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        try {
+          print("===============================");
+          print("$_label : " + documentSnapshot[_label].toString());
+          // documentSnapshot[_label];
+          print("===============================");
+        } catch (e) {
+          print("================2===============");
+          print(e);
+          print(_label);
+          print("================2===============");
+        }
+      }
+    });
+  }
+
+  Future<void> uploadFile(File image) async {
+    firebase_storage.UploadTask uploadTask;
+    int tp = image.path.lastIndexOf('/');
+    String title = image.path.substring(tp + 1, image.path.length);
+    // Create a Reference to the file
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child("user")
+        .child(UserEmail)
+        // .child(title);
+        .child(title);
+    final metadata = firebase_storage.SettableMetadata(
+        contentType: 'image/jpg',
+        customMetadata: {'picked-file-path': image.path});
+
+    if (kIsWeb) {
+      uploadTask = ref.putData(await image.readAsBytes(), metadata);
+    } else {
+      uploadTask = ref.putFile(File(image.path), metadata);
+    }
   }
 }

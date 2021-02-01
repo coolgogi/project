@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 // import 'save_as/save_as.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
+// ignore: non_constant_identifier_names
 final String UserEmail = _auth.currentUser.email;
 
 /// Enum representing the upload task types the example app supports.
@@ -28,7 +29,8 @@ enum UploadType {
 /// The entry point of the application.
 ///
 /// Returns a [MaterialApp].
-class uploadExample extends StatelessWidget {
+// ignore: camel_case_types
+class upload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -68,10 +70,10 @@ class _TaskManager extends State<TaskManager> {
         .ref()
         .child("user")
         .child(UserEmail)
+        // .child(title);
         .child(title);
-
     final metadata = firebase_storage.SettableMetadata(
-        contentType: 'image/jpeg',
+        contentType: 'image/jpg',
         customMetadata: {'picked-file-path': file.path});
 
     if (kIsWeb) {
