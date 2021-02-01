@@ -26,6 +26,8 @@ ThemeData _buildClosetTheme_light() {
     ),
     appBarTheme: base.appBarTheme.copyWith(
       color: BackgroundLight,
+      titleTextStyle: TextStyle(color: OnBackgroundLight),
+
     ),
     bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
 
@@ -94,6 +96,7 @@ ThemeData _buildClosetTheme_dark() {
     // const OnErrorDark = Color(0xFF000000);
     appBarTheme: base.appBarTheme.copyWith(
       color: BackgroundDark,
+      titleTextStyle: TextStyle(color: OnBackgroundDark),
     ),
     bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
 
