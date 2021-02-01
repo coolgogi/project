@@ -63,6 +63,14 @@ dev_dependencies:
   integration_test:
     sdk: flutter
 
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/sunny.png"
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -101,6 +109,7 @@ flutter:
     - assets/profile.jpg
     - assets/ml/mobilenet_v1_1.0_224.txt
     - assets/ml/mobilenet_v1_1.0_224.tflite
+    - assets/icons/sunny.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
