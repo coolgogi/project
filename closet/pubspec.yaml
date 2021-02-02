@@ -116,9 +116,10 @@ flutter:
     - assets/weather/sunny.png
     - assets/weather/cloudy.png
     - assets/weather/moon.png
-    - assets/weather/snow.png
     - assets/weather/rain.png
+    - assets/weather/snow.png
     - assets/weather/background_snow.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

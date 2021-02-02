@@ -127,6 +127,7 @@ class _weatherBarState extends State<weatherBar> {
                             color: Colors.white
                         ),
                       ),
+                      SizedBox(width: 30),
                     ],
                   ),
                   SizedBox(width: 30),
@@ -171,7 +172,6 @@ class _weatherBarState extends State<weatherBar> {
                         fit: BoxFit.scaleDown,
                       );
   }
-
 
   Future<WeatherData> getWeatherData() async {
     final Position position = await Location().getCurrentLocation();
