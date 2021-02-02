@@ -5,11 +5,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'app.dart';
 import 'data/join_or_login.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(Splash());
+  initializeDateFormatting().then((_) => runApp(Splash()));
 }
 
 class Splash extends StatelessWidget {

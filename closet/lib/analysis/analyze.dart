@@ -12,6 +12,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:path_provider/path_provider.dart';
 import 'upload.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final String UserEmail = _auth.currentUser.email;
@@ -22,10 +23,10 @@ class analyze extends StatefulWidget {
   _analyze createState() => new _analyze();
 }
 
-class _analyze extends State<analyze> {
-  File _image;
-  List _results;
+File _image;
+List _results;
 
+class _analyze extends State<analyze> {
   @override
   void initState() {
     super.initState();
@@ -37,16 +38,15 @@ class _analyze extends State<analyze> {
     super.dispose();
   }
 
-  void handleUploadType() async {
-    PickedFile file = await ImagePicker().getImage(source: ImageSource.gallery);
-    // firebase_storage.UploadTask task = await uploadFile(file);
-  }
-
   @override
   Widget build(BuildContext context) {
-    // ignore: deprecated_member_use
-    var childButtons = List<UnicornButton>();
+    Query query = FirebaseFirestore.instance
+        .collection('user')
+        .doc(UserEmail)
+        .collection('closet');
 
+    // ignore: deprecated_member_use
+    List<UnicornButton> childButtons = List<UnicornButton>();
     childButtons.add(UnicornButton(
         hasLabel: true,
         labelText: "Gallery",
@@ -70,52 +70,39 @@ class _analyze extends State<analyze> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Image classification',
-          style: Theme.of(context).textTheme.headline5,
-        ),
-      ),
-      body: Column(
+          title: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (_image != null)
-            Expanded(
-                child: Container(
-                    margin: EdgeInsets.all(10), child: Image.file(_image)))
-          else
-            Container(
-              margin: EdgeInsets.all(40),
-              child: Opacity(
-                opacity: 0.6,
-                child: Center(
-                  child: Text('No Image Selected!'),
-                ),
-              ),
-            ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: _results != null
-                    ? _results.map((result) {
-                        return Card(
-                          child: Container(
-                            margin: EdgeInsets.all(10),
-                            child: Text(
-                              "${result["label"]} -  ${result["confidence"].toStringAsFixed(2)}",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        );
-                      }).toList()
-                    // })
-                    : [],
-              ),
-            ),
-          ),
+          Text('Image classification'),
+          StreamBuilder(
+              stream: FirebaseFirestore.instance.snapshotsInSync(),
+              builder: (context, _) {
+                return Text(
+                  'Latest Snapshot : ${DateTime.now().microsecond}',
+                  style: Theme.of(context).textTheme.caption,
+                );
+              }),
         ],
-      ),
+      )),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: query.snapshots(),
+          builder: (context, stream) {
+            if (stream.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (stream.hasError) {
+              return Center(child: Text(stream.error.toString()));
+            }
+
+            QuerySnapshot querySnapshot = stream.data;
+
+            return ListView.builder(
+              itemCount: querySnapshot.size,
+              itemBuilder: (context, index) => Temp(querySnapshot.docs[index]),
+            );
+          }),
       floatingActionButton: UnicornDialer(
           backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
           parentButtonBackground: Colors.redAccent,
@@ -136,9 +123,8 @@ class _analyze extends State<analyze> {
   }
 
   Future pickAnImageFromGallery() async {
-    // pick image and...
     // ignore: deprecated_member_use
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     // Perform image classification on the selected image.
     imageClassification(image);
   }
@@ -160,60 +146,64 @@ class _analyze extends State<analyze> {
       imageMean: 127.5,
       imageStd: 127.5,
     );
-    uploadFile(image);
     setState(() {
       _results = results;
       _image = image;
     });
-    String _label = results.first["label"];
+  }
+}
 
-    CollectionReference clothes = FirebaseFirestore.instance
-        .collection('users')
-        .doc(UserEmail)
-        .collection("closet");
+class Temp extends StatelessWidget {
+  final DocumentSnapshot snapshot;
 
-    var temp = await Firestore.instance
-        .collection('user')
-        .doc(UserEmail)
-        .collection("closet")
-        .doc("clothes")
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        try {
-          print("===============================");
-          print("$_label : " + documentSnapshot[_label].toString());
-          // documentSnapshot[_label];
-          print("===============================");
-        } catch (e) {
-          print("================2===============");
-          print(e);
-          print(_label);
-          print("================2===============");
-        }
-      }
-    });
+  Temp(this.snapshot);
+
+  Map<String, dynamic> get temp {
+    return snapshot.data();
   }
 
-  Future<void> uploadFile(File image) async {
-    firebase_storage.UploadTask uploadTask;
-    int tp = image.path.lastIndexOf('/');
-    String title = image.path.substring(tp + 1, image.path.length);
-    // Create a Reference to the file
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child("user")
-        .child(UserEmail)
-        // .child(title);
-        .child(title);
-    final metadata = firebase_storage.SettableMetadata(
-        contentType: 'image/jpg',
-        customMetadata: {'picked-file-path': image.path});
-
-    if (kIsWeb) {
-      uploadTask = ref.putData(await image.readAsBytes(), metadata);
-    } else {
-      uploadTask = ref.putFile(File(image.path), metadata);
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Card(child: Text("$temp")),
+        if (_image != null)
+          Expanded(
+              child: Container(
+                  margin: EdgeInsets.all(10), child: Image.file(_image)))
+        else
+          Container(
+            margin: EdgeInsets.all(40),
+            child: Opacity(
+              opacity: 0.6,
+              child: Center(
+                child: Text('No Image Selected!'),
+              ),
+            ),
+          ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: _results != null
+                  ? _results.map((result) {
+                      return Card(
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            "${result["label"]} -  ${result["confidence"].toStringAsFixed(2)}",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      );
+                    }).toList()
+                  : [],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
