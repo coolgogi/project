@@ -145,30 +145,30 @@ class _weatherBarState extends State<weatherBar> {
     return weatherData.weather == 'Rain'
         ? Image(
             image: AssetImage("assets/weather/rain.png"),
-            width: size.width * 0.1,
+            width: size.width * 0.2,
             fit: BoxFit.scaleDown,
           )
         : weatherData.weather == 'Snow'
             ? Image(
                 image: AssetImage("assets/weather/snow.png"),
-                width: size.width * 0.1,
+                width: size.width * 0.2,
                 fit: BoxFit.scaleDown,
               )
             : weatherData.currentCondition < 600
                 ? Image(
                     image: AssetImage("assets/weather/cloudy.png"),
-                    width: size.width * 0.1,
+                    width: size.width * 0.2,
                     fit: BoxFit.scaleDown,
                   )
                 : DateTime.now().hour >= 15
                     ? Image(
                         image: AssetImage("assets/weather/moon.png"),
-                        width: size.width * 0.1,
+                        width: size.width * 0.2,
                         fit: BoxFit.scaleDown,
                       )
                     : Image(
                         image: AssetImage("assets/weather/sunny.png"),
-                        width: size.width * 0.1,
+                        width: size.width * 0.2,
                         fit: BoxFit.scaleDown,
                       );
   }
