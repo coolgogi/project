@@ -170,7 +170,7 @@ class _closetState extends State<closet> {
                   children: [
                     Container(
                       child: SizedBox(
-                        height: size.height * 0.10,
+                        height: size.height * 0.129,
                         child: Column(
                           children: <Widget>[
                             weatherBar(),
