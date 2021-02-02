@@ -31,13 +31,7 @@ class _MyState extends State<My>{
                     :FileImage(File(_imageFile.path)),
               ),
             ),
-            const Divider(
-              color: Colors.grey,
-              height: 10,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-            ),
+            _divier(),
             ListTile(
               title: Text('회원정보 수정'),
             ),
@@ -56,13 +50,7 @@ class _MyState extends State<My>{
             ListTile(
               title: Text('회원탈퇴'),
             ),
-            const Divider(
-              color: Colors.grey,
-              height: 10,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-            ),
+            _divier(),
             ListTile(
               title: Text('서비스 설정',
                 style: TextStyle(
@@ -75,13 +63,7 @@ class _MyState extends State<My>{
             ListTile(
               title: Text('설정'),
             ),
-            const Divider(
-              color: Colors.grey,
-              height: 10,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-            ),
+            _divier(),
             ListTile(
               title: Text('고객센터',
                 style: TextStyle(
@@ -94,7 +76,8 @@ class _MyState extends State<My>{
             ListTile(
               title: Text('앱 문의 건의'),
             ),
-
+            _divier(),
+            _info(),
 
             /*
             //SizedBox(height:20),
@@ -120,6 +103,40 @@ class _MyState extends State<My>{
 
         )
       )
+    );
+  }
+
+  Widget _divier(){
+    return Divider(
+      color: Colors.grey,
+      height: 10,
+      thickness: 1,
+      indent: 0,
+      endIndent: 0,
+    );
+  }
+
+  Widget _info(){
+    return Container(
+      padding: const EdgeInsets.fromLTRB(15, 10, 10, 20),
+      child: Row(
+        children: [
+          Container(
+              padding: const EdgeInsets.fromLTRB(0, 10, 10, 10),
+              child: Text(
+                '서비스 이용 약관',
+                style: TextStyle(
+                    color: Colors.grey,
+                fontSize: 10),)),
+          Container(
+              padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+              child: Text(
+                '개인정보 처리방침',
+                style: TextStyle(
+                  color: Colors.grey,
+                fontSize: 10,),)),
+        ],
+      ),
     );
   }
 

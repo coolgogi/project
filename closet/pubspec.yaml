@@ -21,10 +21,10 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  firebase_auth: ^0.18.0+1
-  cloud_firestore: ^0.14.0
+  firebase_auth: ^0.18.4
+  cloud_firestore: ^0.14.4
   firebase_storage: ^5.0.1
-  firebase_core: ^0.5.0
+  firebase_core: ^0.5.3
   google_sign_in: ^4.5.1
   flutter_facebook_login: ^3.0.0
   shared_preferences: ^0.5.12+4
@@ -48,9 +48,11 @@ dependencies:
   flutter_search_bar: ^2.1.0
   table_calendar: ^2.3.3
   pie_chart: ^4.0.1
-
+  backdrop: ^0.4.7
+  intl: ^0.16.1
   flutter:
     sdk: flutter
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -63,6 +65,14 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
+
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/sunny.png"
+
 
 
 # For information on the generic Dart part of this file, see the
@@ -102,6 +112,7 @@ flutter:
     - assets/profile.jpg
     - assets/ml/mobilenet_v1_1.0_224.txt
     - assets/ml/mobilenet_v1_1.0_224.tflite
+    - assets/icons/sunny.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

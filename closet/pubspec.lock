@@ -57,6 +57,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety.3"
+  backdrop:
+    dependency: "direct main"
+    description:
+      name: backdrop
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.7"
   boolean_selector:
     dependency: transitive
     description:
@@ -298,6 +305,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
+  flutter_launcher_icons:
+    dependency: "direct dev"
+    description:
+      name: flutter_launcher_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -417,7 +431,7 @@ packages:
     source: sdk
     version: "0.9.2+2"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       url: "https://pub.dartlang.org"
