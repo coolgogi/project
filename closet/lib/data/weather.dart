@@ -35,15 +35,15 @@ class WeatherData {
         weather = json['weather'][0]['main'];
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'temp': temp,
-    'temp_max': temp_max,
-    'temp_min': temp_min,
-    'feels_like': feels_like,
-    'humidity': humidity,
-    'currentCondition': currentCondition,
-    'weather': weather,
-  };
+        'name': name,
+        'temp': temp,
+        'temp_max': temp_max,
+        'temp_min': temp_min,
+        'feels_like': feels_like,
+        'humidity': humidity,
+        'currentCondition': currentCondition,
+        'weather': weather,
+      };
 }
 
 class weatherBar extends StatefulWidget {
@@ -77,101 +77,101 @@ class _weatherBarState extends State<weatherBar> {
 
     return Container(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FutureBuilder(
-            future: getWeatherData(),
-            builder: (context, AsyncSnapshot<WeatherData> snapshot) {
-              if (snapshot.hasData == false) {
-                return CircularProgressIndicator();
-              }
-              return Container(
-                height: size.height * 0.101,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'assets/weather/background_snow.png'),
-                    fit: BoxFit.fill,
-                  ),
+      padding: const EdgeInsets.all(8.0),
+      child: FutureBuilder(
+        future: getWeatherData(),
+        builder: (context, AsyncSnapshot<WeatherData> snapshot) {
+          if (snapshot.hasData == false) {
+            return CircularProgressIndicator();
+          }
+          return Container(
+            height: size.height * 0.101,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                      'assets/weather/background_snow.png'),
+                  fit: BoxFit.fill,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      // SizedBox(width: 10),
-                      weatherIcon(weatherData, size),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  // SizedBox(width: 10),
+                  weatherIcon(weatherData, size),
+                  Text(
+                    '${weatherData.temp.toStringAsFixed(0)}°c',
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        '${weatherData.temp.toStringAsFixed(0)}°c',
+                        '${weatherData.temp_min.toStringAsFixed(0)}°/${weatherData.temp_max.toStringAsFixed(0)}°',
                         style: TextStyle(
-                            fontSize: 30,
+                            // fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.white
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${weatherData.temp_min.toStringAsFixed(0)}°/${weatherData.temp_max.toStringAsFixed(0)}°',
-                            style: TextStyle(
-                              // fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
-                            ),
-                          ),
-                          Text(
-                            '${weatherData.name.toString()}',
-                            style: TextStyle(
-                              // fontSize: 30,
-                              // fontWeight: FontWeight.bold,
-                                color: Colors.white
-                            ),
-                          ),
-                        ],
+                      Text(
+                        '${weatherData.name.toString()}',
+                        style: TextStyle(
+                            // fontSize: 30,
+                            // fontWeight: FontWeight.bold,
+                            color: Colors.white
+                        ),
                       ),
                       SizedBox(width: 30),
                     ],
                   ),
-                ),
-              );
-            },
-          ),
-        ));
+                  SizedBox(width: 30),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    ));
   }
 
 
   Widget weatherIcon(WeatherData weatherData, size) {
     return weatherData.weather == 'Rain'
         ? Image(
-      image: AssetImage("assets/weather/rain.png"),
-      width: size.width * 0.1,
-      fit: BoxFit.scaleDown,
-    )
+            image: AssetImage("assets/weather/rain.png"),
+            width: size.width * 0.1,
+            fit: BoxFit.scaleDown,
+          )
         : weatherData.weather == 'Snow'
-        ? Image(
-      image: AssetImage("assets/weather/snow.png"),
-      width: size.width * 0.1,
-      fit: BoxFit.scaleDown,
-    )
-        : weatherData.currentCondition < 600
-        ? Image(
-      image: AssetImage("assets/weather/cloudy.png"),
-      width: size.width * 0.1,
-      fit: BoxFit.scaleDown,
-    )
-        : DateTime.now().hour >= 15
-        ? Image(
-      image: AssetImage("assets/weather/moon.png"),
-      width: size.width * 0.1,
-      fit: BoxFit.scaleDown,
-    )
-        : Image(
-      image: AssetImage("assets/weather/sunny.png"),
-      width: size.width * 0.1,
-      fit: BoxFit.scaleDown,
-    );
+            ? Image(
+                image: AssetImage("assets/weather/snow.png"),
+                width: size.width * 0.1,
+                fit: BoxFit.scaleDown,
+              )
+            : weatherData.currentCondition < 600
+                ? Image(
+                    image: AssetImage("assets/weather/cloudy.png"),
+                    width: size.width * 0.1,
+                    fit: BoxFit.scaleDown,
+                  )
+                : DateTime.now().hour >= 15
+                    ? Image(
+                        image: AssetImage("assets/weather/moon.png"),
+                        width: size.width * 0.1,
+                        fit: BoxFit.scaleDown,
+                      )
+                    : Image(
+                        image: AssetImage("assets/weather/sunny.png"),
+                        width: size.width * 0.1,
+                        fit: BoxFit.scaleDown,
+                      );
   }
-
 
   Future<WeatherData> getWeatherData() async {
     final Position position = await Location().getCurrentLocation();
@@ -197,10 +197,6 @@ class _weatherBarState extends State<weatherBar> {
     }
   }
 }
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
@@ -244,11 +240,6 @@ class _weatherBarState extends State<weatherBar> {
 // }
 //
 
-
-
-
-
-
 // import 'dart:convert';
 // import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
@@ -273,7 +264,6 @@ class _weatherBarState extends State<weatherBar> {
 //     print('response status code = ${response.statusCode}');
 //   }
 // }
-
 
 // import 'dart:convert';
 //

@@ -47,6 +47,7 @@ dependencies:
   file_picker: ^2.0.11
   flutter_search_bar: ^2.1.0
   table_calendar: ^2.3.3
+  pie_chart: ^4.0.1
   backdrop: ^0.4.7
   intl: ^0.16.1
   flutter:
@@ -70,8 +71,12 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icons/sunny.png"
-
+  image_path:
+    - "assets/weather/sunny.png"
+    - "assets/weather/cloudy.png"
+    - "assets/weather/moon.png"
+    - 'assets/weather/snow.png'
+    - 'assets/weather/rain.png'
 
 
 # For information on the generic Dart part of this file, see the
