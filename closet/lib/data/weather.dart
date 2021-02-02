@@ -84,61 +84,68 @@ class _weatherBarState extends State<weatherBar> {
           if (snapshot.hasData == false) {
             return CircularProgressIndicator();
           }
-          return Container(
-            height: size.height * 0.101,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                      'assets/weather/background_snow.png'),
-                  fit: BoxFit.fill,
-                ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  // SizedBox(width: 10),
-                  weatherIcon(weatherData, size),
-                  Text(
-                    '${weatherData.temp.toStringAsFixed(0)}°c',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${weatherData.temp_min.toStringAsFixed(0)}°/${weatherData.temp_max.toStringAsFixed(0)}°',
-                        style: TextStyle(
-                            // fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                        ),
-                      ),
-                      Text(
-                        '${weatherData.name.toString()}',
-                        style: TextStyle(
-                            // fontSize: 30,
-                            // fontWeight: FontWeight.bold,
-                            color: Colors.white
-                        ),
-                      ),
-                      SizedBox(width: 30),
-                    ],
-                  ),
-                  SizedBox(width: 30),
-                ],
-              ),
-            ),
-          );
+          else {
+            return CreateWeatherBar(weatherData, size);
+          }
         },
       ),
     ));
   }
+
+
+  Widget CreateWeatherBar(WeatherData weatherData, size) {
+    return Container(
+      height: size.height * 0.101,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+              'assets/weather/background_snow.png'),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            // SizedBox(width: 10),
+            weatherIcon(weatherData, size),
+            Text(
+              '${weatherData.temp.toStringAsFixed(0)}°c',
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${weatherData.temp_min.toStringAsFixed(0)}°/${weatherData.temp_max.toStringAsFixed(0)}°',
+                  style: TextStyle(
+                    // fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
+                  ),
+                ),
+                Text(
+                  '${weatherData.name.toString()}',
+                  style: TextStyle(
+                    // fontSize: 30,
+                    // fontWeight: FontWeight.bold,
+                      color: Colors.white
+                  ),
+                ),
+                SizedBox(width: 30),
+              ],
+            ),
+            SizedBox(width: 30),
+          ],
+        ),
+      ),
+    );
+}
 
 
   Widget weatherIcon(WeatherData weatherData, size) {

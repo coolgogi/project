@@ -168,17 +168,6 @@ class _closetState extends State<closet> {
                 ),
                 body: Column(
                   children: [
-                    Container(
-                      child: SizedBox(
-                        height: size.height * 0.129,
-                        child: Column(
-                          children: <Widget>[
-                            weatherBar(),
-                          ],
-                        ),
-                      ),
-                    ),
-
                     Expanded(
                       child: TabBarView(
                         children: [
