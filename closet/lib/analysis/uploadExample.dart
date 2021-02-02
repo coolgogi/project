@@ -7,12 +7,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await firebase_core.Firebase.initializeApp();
-  runApp(StorageExampleApp());
-}
+// import 'save_as/save_as.dart';
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final String UserEmail = _auth.currentUser.email;
 
 /// Enum representing the upload task types the example app supports.
 enum UploadType {
@@ -29,7 +28,7 @@ enum UploadType {
 /// The entry point of the application.
 ///
 /// Returns a [MaterialApp].
-class StorageExampleApp extends StatelessWidget {
+class uploadExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,20 +55,23 @@ class _TaskManager extends State<TaskManager> {
   Future<firebase_storage.UploadTask> uploadFile(PickedFile file) async {
     if (file == null) {
       Scaffold.of(context)
+          // ignore: deprecated_member_use
           .showSnackBar(SnackBar(content: Text("No file was selected")));
       return null;
     }
 
     firebase_storage.UploadTask uploadTask;
-
+    int tp = file.path.lastIndexOf('/');
+    String title = file.path.substring(tp + 1, file.path.length);
     // Create a Reference to the file
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('playground')
-        .child('/some-image.jpg');
-
+        .child("user")
+        .child(UserEmail)
+        // .child(title);
+        .child(title);
     final metadata = firebase_storage.SettableMetadata(
-        contentType: 'image/jpeg',
+        contentType: 'image/jpg',
         customMetadata: {'picked-file-path': file.path});
 
     if (kIsWeb) {
@@ -110,6 +112,9 @@ class _TaskManager extends State<TaskManager> {
       case UploadType.file:
         PickedFile file =
             await ImagePicker().getImage(source: ImageSource.gallery);
+        print("==============================");
+        print(file.path);
+        print("==============================");
         firebase_storage.UploadTask task = await uploadFile(file);
         if (task != null) {
           setState(() {
@@ -144,6 +149,7 @@ class _TaskManager extends State<TaskManager> {
       text: link,
     ));
 
+    // ignore: deprecated_member_use
     Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(
       'Success!\n Copied download URL to Clipboard!',
@@ -157,6 +163,7 @@ class _TaskManager extends State<TaskManager> {
 
     await ref.writeToFile(tempFile);
 
+    // ignore: deprecated_member_use
     Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(
       'Success!\n Downloaded ${ref.name} \n from bucket: ${ref.bucket}\n '
@@ -256,7 +263,7 @@ class UploadTaskListTile extends StatelessWidget {
             }
           } else if (snapshot != null) {
             subtitle =
-                Text('${state}: ${_bytesTransferred(snapshot)} bytes sent');
+                Text('$state: ${_bytesTransferred(snapshot)} bytes sent');
           }
 
           return Dismissible(

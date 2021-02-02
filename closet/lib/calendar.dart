@@ -184,18 +184,11 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
           Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              // Switch out 2 lines below to play with TableCalendar's settings
-              //-----------------------
               _buildTableCalendar(),
-               //_buildTableCalendarWithBuilders(),
                SizedBox(height: 8.0),
               _divier(),
-              //_buildButtons(),
-              //const SizedBox(height: 8.0),
-              //  Expanded(child: _buildEventList()),
-            ],
+              ],
           ),
-
           _bottomText(),
           SizedBox(height: 8.0),
           _bottomField(),
