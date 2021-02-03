@@ -11,8 +11,6 @@ import 'package:tflite/tflite.dart';
 import 'package:image_picker/image_picker.dart';
 import '../location.dart';
 
-
-
 class WeatherData {
   final String name;
   final num temp;
@@ -21,9 +19,10 @@ class WeatherData {
   final num feels_like;
   final int humidity;
   final int currentCondition;
+  final String weather;
 
-
-  WeatherData(this.name, this.temp, this.feels_like, this.humidity, this.temp_max, this.temp_min, this.currentCondition);
+  WeatherData(this.name, this.temp, this.feels_like, this.humidity,
+      this.temp_max, this.temp_min, this.currentCondition, this.weather);
 
   WeatherData.fromJson(Map<String, dynamic> json)
       : name = json['name'],
@@ -32,17 +31,19 @@ class WeatherData {
         temp_min = json['main']['temp_min'],
         feels_like = json['main']['feels_like'],
         humidity = json['main']['humidity'],
-        currentCondition = json['weather'][0]['id'];
+        currentCondition = json['weather'][0]['id'],
+        weather = json['weather'][0]['main'];
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'temp': temp,
-    'temp_max': temp_max,
-    'temp_min': temp_min,
-    'feels_like': feels_like,
-    'humidity': humidity,
-    'currentCondition' : currentCondition,
-  };
+        'name': name,
+        'temp': temp,
+        'temp_max': temp_max,
+        'temp_min': temp_min,
+        'feels_like': feels_like,
+        'humidity': humidity,
+        'currentCondition': currentCondition,
+        'weather': weather,
+      };
 }
 
 class weatherBar extends StatefulWidget {
@@ -57,8 +58,7 @@ class _weatherBarState extends State<weatherBar> {
   var weatherData;
 
   _weatherBarState() {
-      getWeatherData().then((value) => setState(() {
-    }));
+    getWeatherData().then((value) => setState(() {}));
   }
 
   @override
@@ -77,91 +77,112 @@ class _weatherBarState extends State<weatherBar> {
 
     return Container(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FutureBuilder(
-            future: getWeatherData(),
-            builder: (context, AsyncSnapshot<WeatherData> snapshot) {
-              if(snapshot.hasData == false) {
-                return CircularProgressIndicator();
-              }
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  // SizedBox(width: 10),
-                  weatherData.currentCondition < 600
-                      ? Icon(FontAwesomeIcons.cloud)
-                        : DateTime.now().hour >= 15
-                          ? Icon(FontAwesomeIcons.moon,)
-                            : Image(
-                                image: AssetImage("assets/icons/sunny.png"),
-                                width: size.width * 0.1,
-                                fit: BoxFit.scaleDown,
-                              ),
-                  Text(
-                    '${weatherData.temp.toStringAsFixed(0)}°',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        '${weatherData.temp_min.toStringAsFixed(0)}°/${weatherData.temp_max.toStringAsFixed(0)}°',
-                        // style: TextStyle(fontSize: 55)
-                      ),
-                      Text(
-                        '${weatherData.name.toString()}',
-                        // style: TextStyle(fontSize: 15)
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 30),
-                  SizedBox(width: 30),
-                ],
-              );
-            },
-          ),
-        ));
+      padding: const EdgeInsets.all(8.0),
+      child: FutureBuilder(
+        future: getWeatherData(),
+        builder: (context, AsyncSnapshot<WeatherData> snapshot) {
+          if (snapshot.hasData == false) {
+            return CircularProgressIndicator();
+          }
+          else {
+            return CreateWeatherBar(weatherData, size);
+          }
+        },
+      ),
+    ));
   }
 
-  // Future<void> getCurrentLocation() async {
-  //   try {
-  //     // print("111!!!");
-  //     bool isLocationServiceEnabled =
-  //     await Geolocator.isLocationServiceEnabled();
-  //     if (isLocationServiceEnabled) {
-  //       print("True!!");
-  //     } else {
-  //       print("False!!");
-  //     }
-  //     //이 코드는 오류가 날 수 있으니 try catch 로 오류잡기
-  //     // print("222!!!");
-  //     // Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low, timeLimit: Duration(seconds: 10)); <-- 이게 문제였음. 이유는 모르겠음.
-  //     position =
-  //     await Geolocator.getCurrentPosition(timeLimit: Duration(seconds: 10));
-  //     // print("333!!!");
-  //     //라이브러리를 통해 현재 나의 GPS 호출
-  //     //low 부분의 정확도가 높아질수록 배터리 용량 많이 잡아먹음
-  //
-  //     lat = position.latitude; //해당값 각각 할당
-  //     lon = position.longitude;
-  //     print(lat);
-  //     print(lon);
-  //     await getWeatherData(lat: lat.toString(), lon: lon.toString());
-  //     // print('과연??: ${weatherData.toString()}');
-  //     // print('과연??!!: ${weatherData.name.toString()}');
-  //     // print('과연?!!!: ${weatherData.temp.toString()}');
-  //
-  //   } catch (e) {
-  //     print("error!!!");
-  //     print(e);
-  //   }
-  //   // return position;
-  // }
+
+  Widget CreateWeatherBar(WeatherData weatherData, size) {
+    return Container(
+      height: size.height * 0.101,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+              'assets/weather/background_snow.png'),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            // SizedBox(width: 10),
+            weatherIcon(weatherData, size),
+            Text(
+              '${weatherData.temp.toStringAsFixed(0)}°c',
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${weatherData.temp_min.toStringAsFixed(0)}°/${weatherData.temp_max.toStringAsFixed(0)}°',
+                  style: TextStyle(
+                    // fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
+                  ),
+                ),
+                Text(
+                  '${weatherData.name.toString()}',
+                  style: TextStyle(
+                    // fontSize: 30,
+                    // fontWeight: FontWeight.bold,
+                      color: Colors.white
+                  ),
+                ),
+                SizedBox(width: 30),
+              ],
+            ),
+            SizedBox(width: 30),
+          ],
+        ),
+      ),
+    );
+}
+
+
+  Widget weatherIcon(WeatherData weatherData, size) {
+    return weatherData.weather == 'Rain'
+        ? Image(
+            image: AssetImage("assets/weather/rain.png"),
+            width: size.width * 0.2,
+            fit: BoxFit.scaleDown,
+          )
+        : weatherData.weather == 'Snow'
+            ? Image(
+                image: AssetImage("assets/weather/snow.png"),
+                width: size.width * 0.2,
+                fit: BoxFit.scaleDown,
+              )
+            : weatherData.currentCondition < 600
+                ? Image(
+                    image: AssetImage("assets/weather/cloudy.png"),
+                    width: size.width * 0.2,
+                    fit: BoxFit.scaleDown,
+                  )
+                : DateTime.now().hour >= 15
+                    ? Image(
+                        image: AssetImage("assets/weather/moon.png"),
+                        width: size.width * 0.2,
+                        fit: BoxFit.scaleDown,
+                      )
+                    : Image(
+                        image: AssetImage("assets/weather/sunny.png"),
+                        width: size.width * 0.2,
+                        fit: BoxFit.scaleDown,
+                      );
+  }
 
   Future<WeatherData> getWeatherData() async {
     final Position position = await Location().getCurrentLocation();
-    // Location().getCurrentLocation().then((value) => setState(() {
-    //     position = value;
-    // }));
+
     lat = position.latitude;
     lon = position.longitude;
     var str =
@@ -171,6 +192,7 @@ class _weatherBarState extends State<weatherBar> {
 
     if (response.statusCode == 200) {
       var data = response.body;
+      print(data);
       Map dataJson = jsonDecode(data);
       weatherData = WeatherData.fromJson(dataJson);
 
@@ -182,10 +204,6 @@ class _weatherBarState extends State<weatherBar> {
     }
   }
 }
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
@@ -229,11 +247,6 @@ class _weatherBarState extends State<weatherBar> {
 // }
 //
 
-
-
-
-
-
 // import 'dart:convert';
 // import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
@@ -258,7 +271,6 @@ class _weatherBarState extends State<weatherBar> {
 //     print('response status code = ${response.statusCode}');
 //   }
 // }
-
 
 // import 'dart:convert';
 //

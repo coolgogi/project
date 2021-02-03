@@ -17,10 +17,7 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
-  final _selected = DateTime.now();
-  final TextEditingController _title = TextEditingController();
-  final TextEditingController _location = TextEditingController();
-  final TextEditingController _memo = TextEditingController();
+  DateTime _selectedDayDay = DateTime.now();
   SearchBar searchBar;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Map<DateTime, List> _events;
@@ -28,10 +25,28 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset : false,
+      appBar: searchBar.build(context),
+      key: _scaffoldKey,
+      body: ListView(
+        children: [
+          _calendar(),
+          _bottomText(),
+          _box(),
+          _bottomField(),
+        ],
+      ),
+    );
+  }
+
   AppBar buildAppBar(BuildContext context) {
     return new AppBar(
         iconTheme: IconThemeData(
-            color: Color(0xFF4100E0),
+          color: Color(0xFF4100E0),
         ),
         title: new Text('Calendar', style: TextStyle(
             color: Colors.black
@@ -43,21 +58,11 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
             color: Color(0xFF4100E0),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return NewEventPage();
+                return NewEventPage(_selectedDayDay);
               }));
             },
           )
-          /*
-          BackdropToggleButton(
-            icon: AnimatedIcons.list_view,
-            color: Colors.black,
-          ),
-          BackdropToggleButton(
-            icon: AnimatedIcons.add_event,
-            color: Colors.black,
-          ),
-           */
-          ]);
+        ]);
   }
 
   void onSubmitted(String value) {
@@ -159,7 +164,9 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
     print('CALLBACK: _onDaySelected');
     setState(() {
       _selectedEvents = events;
-    });
+      _selectedDayDay = day;
+    }
+    );
   }
 
   void _onVisibleDaysChanged(
@@ -172,29 +179,20 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
     print('CALLBACK: _onCalendarCreated');
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset : false,
-      appBar: searchBar.build(context),
-      key: _scaffoldKey,
-      body: ListView(
-        children: [
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              _buildTableCalendar(),
-               SizedBox(height: 8.0),
-              _divier(),
-              ],
-          ),
-          _bottomText(),
-          SizedBox(height: 8.0),
-          _bottomField(),
-        ],
-      ),
+  Widget _calendar(){
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        _buildTableCalendar(),
+        _box(),
+        _divier(),
+      ],
     );
+  }
+
+  Widget _box(){
+    return SizedBox(
+        height: 8.0);
   }
 
   Widget _divier() {
@@ -233,6 +231,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
 
   // Simple TableCalendar configuration (using Styles)
   Widget _buildTableCalendar() {
+
     return TableCalendar(
       locale: 'ko-KR',
       calendarController: _calendarController,
@@ -268,7 +267,7 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
   // More advanced TableCalendar configuration (using Builders & Styles)
   Widget _buildTableCalendarWithBuilders() {
     return TableCalendar(
-      locale: Locale('ko', 'KR'),
+      locale: 'ko-KR',
       calendarController: _calendarController,
       events: _events,
       holidays: _holidays,
@@ -463,226 +462,3 @@ class _CalendarState extends State<Calendar> with TickerProviderStateMixin {
 
 
 
-/*
-class Calendar extends StatefulWidget {
-  @override
-  _CalendarState createState() => new _CalendarState();
-}
-
-class _CalendarState extends State<Calendar> {
-  SearchBar searchBar;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-  AppBar buildAppBar(BuildContext context) {
-    return new AppBar(
-        iconTheme: IconThemeData(
-            color: Colors.black
-        ),
-        title: new Text('Calendar', style: TextStyle(
-            color: Colors.black
-        )),
-        actions: [searchBar.getSearchAction(context)]);
-  }
-
-  void onSubmitted(String value) {
-    setState(() => _scaffoldKey.currentState
-        .showSnackBar(new SnackBar(content: new Text('You wrote $value!'))));
-  }
-
-  _CalendarState() {
-    searchBar = new SearchBar(
-        inBar: false,
-        buildDefaultAppBar: buildAppBar,
-        setState: setState,
-        onSubmitted: onSubmitted,
-        onCleared: () {
-          print("cleared");
-        },
-        onClosed: () {
-          print("closed");
-        });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      resizeToAvoidBottomInset : false,
-      appBar: searchBar.build(context),
-      key: _scaffoldKey,
-      body: CalendarCom(),
-    );
-  }
-}
-
-class CalendarCom extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final _sampleEvents = sampleEvents();
-
-    return CellCalendar(
-        events: _sampleEvents,
-        daysOfTheWeekBuilder: (dayIndex) {
-          final labels = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 4.0),
-            child: Text(
-              labels[dayIndex],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          );
-        },
-        monthYearLabelBuilder: (datetime) {
-          final year = datetime.year.toString();
-          final month = datetime.month.toString();
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              "$year년 $month월",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          );
-        },
-        onCellTapped: (date) {
-          final eventsOnTheDate = _sampleEvents.where((event) {
-            final eventDate = event.eventDate;
-            return eventDate.year == date.year &&
-                eventDate.month == date.month &&
-                eventDate.day == date.day;
-          }).toList();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                title:
-                Text(date.month.monthName + " " + date.day.toString()),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: eventsOnTheDate
-                      .map(
-                        (event) => Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(4),
-                      margin: EdgeInsets.only(bottom: 12),
-                      color: event.eventBackgroundColor,
-                      child: Text(
-                        event.eventName,
-                        style: TextStyle(color: event.eventTextColor),
-                      ),
-                    ),
-                  )
-                      .toList(),
-                ),
-              ));
-        },
-        onPageChanged: (firstDate, lastDate) {
-          /// Called when the page was changed
-          /// Fetch additional events by using the range between [firstDate] and [lastDate] if you want
-        },
-      ); // This trailing comma makes auto-formatting nicer for build methods.
-
-  }
-}
-
- */
-
-/*
-  @override
-  Widget build(BuildContext context) {
-    return BackdropScaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset : false,
-      appBar: searchBar.build(context),
-      key: _scaffoldKey,
-      backLayer: ListView(
-        children: [
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              // Switch out 2 lines below to play with TableCalendar's settings
-              //-----------------------
-              _buildTableCalendar(),
-              // _buildTableCalendarWithBuilders(),
-              const SizedBox(height: 8.0),
-              const Divider(
-                color: Colors.grey,
-                height: 10,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-              //_buildButtons(),
-              //const SizedBox(height: 8.0),
-              //  Expanded(child: _buildEventList()),
-            ],
-          ),
-        ],
-      ),
-      subHeader: BackdropSubHeader(
-        title: Center(child: Text("새로운 이벤트 ",style: TextStyle(fontWeight: FontWeight.bold),)),
-        leading: TextButton(
-          onPressed: () {
-            // Respond to button press
-          },
-          child: Text("취소",style: TextStyle(fontWeight: FontWeight.bold),),
-        ),
-        trailing: TextButton(
-          onPressed: () {
-            // Respond to button press
-          },
-          child: Text("추가",style: TextStyle(fontWeight: FontWeight.bold),),
-        ),
-      ),
-      frontLayer: ListView(
-        children:[
-          TextFormField(
-            controller: _title,
-            decoration: InputDecoration(
-              icon: Icon(Icons.account_circle),
-              labelText: "Email",
-            ),
-            validator: (String value) {
-              //input값이 잘 작성됐는지 확인해줌
-              if (value.isEmpty) {
-                return "Please input correct Email";
-              }
-              return null;
-            },
-          ),
-
-        ],
-      ),
-      /*
-      body: ListView(
-        children: [
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            // Switch out 2 lines below to play with TableCalendar's settings
-            //-----------------------
-            _buildTableCalendar(),
-            // _buildTableCalendarWithBuilders(),
-            const SizedBox(height: 8.0),
-            const Divider(
-              color: Colors.grey,
-              height: 10,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-            ),
-            //_buildButtons(),
-            //const SizedBox(height: 8.0),
-          //  Expanded(child: _buildEventList()),
-          ],
-        ),
-      ],
-      ),
-
-       */
-    );
-  }
-   */
