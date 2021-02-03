@@ -75,7 +75,7 @@ class _analyze extends State<analyze> {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        'Image classification',
+        '내 옷장 분석',
         style: Theme.of(context).textTheme.headline5,
       )),
       body: StreamBuilder<QuerySnapshot>(
@@ -92,7 +92,9 @@ class _analyze extends State<analyze> {
             QuerySnapshot querySnapshot = stream.data;
             DocumentSnapshot ds = querySnapshot.docs[querySnapshot.size - 1];
             return Column(children: [
+              leftSideText("색상 분석"),
               makePieChart(ds),
+              leftSideText("옷 종류 분석"),
               makeImageList(querySnapshot),
             ]);
           }),
@@ -244,12 +246,17 @@ class makePieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PieChart(
-      dataMap: PieChartData,
+    return Container(
+      child: PieChart(
+        dataMap: PieChartData,
+        chartType: ChartType.ring,
+      ),
+      padding: EdgeInsets.all(16.0),
     );
   }
 }
 
+// ignore: camel_case_types
 class makeImageList extends StatelessWidget {
   final QuerySnapshot snapshot;
 
@@ -291,5 +298,19 @@ class GridViewCard extends StatelessWidget {
             ),
           )
         : Card();
+  }
+}
+
+// ignore: camel_case_types
+class leftSideText extends StatelessWidget {
+  final String title;
+  leftSideText(this.title);
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      Text('  $title',
+          textAlign: TextAlign.right,
+          style: Theme.of(context).textTheme.headline6),
+    ]);
   }
 }
