@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
@@ -8,13 +7,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:unicorndial/unicorndial.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:path_provider/path_provider.dart';
-import 'upload.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+// ignore: non_constant_identifier_names
 final String UserEmail = _auth.currentUser.email;
 
 // ignore: camel_case_types
@@ -26,7 +23,14 @@ class analyze extends StatefulWidget {
 File _image;
 List _results;
 
+// ignore: camel_case_types
 class _analyze extends State<analyze> {
+  Map<String, double> dataMap = {
+    "jersey": 1,
+    "miniSkirt": 2,
+  };
+
+  // ignore: non_constant_identifier_names
   @override
   void initState() {
     super.initState();
@@ -70,20 +74,9 @@ class _analyze extends State<analyze> {
 
     return Scaffold(
       appBar: AppBar(
-          title: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text('Image classification'),
-          StreamBuilder(
-              stream: FirebaseFirestore.instance.snapshotsInSync(),
-              builder: (context, _) {
-                return Text(
-                  'Latest Snapshot : ${DateTime.now().microsecond}',
-                  style: Theme.of(context).textTheme.caption,
-                );
-              }),
-        ],
+          title: Text(
+        'Image classification',
+        style: Theme.of(context).textTheme.headline5,
       )),
       body: StreamBuilder<QuerySnapshot>(
           stream: query.snapshots(),
@@ -97,11 +90,25 @@ class _analyze extends State<analyze> {
             }
 
             QuerySnapshot querySnapshot = stream.data;
-
-            return ListView.builder(
-              itemCount: querySnapshot.size,
-              itemBuilder: (context, index) => Temp(querySnapshot.docs[index]),
-            );
+            return Column(children: [
+              // ListView(
+              //     children: List.generate(querySnapshot.size, (index) {
+              //   if (querySnapshot.docs[index].id == "clothes") {
+              //     return makePieChart(querySnapshot.docs[index]);
+              //   } else
+              //     return Container();
+              // })),
+              Expanded(
+                child: GridView.count(
+                    crossAxisCount: 4,
+                    children: List.generate(querySnapshot.size, (index) {
+                      if (querySnapshot.docs[index].id == "clothes") {
+                        return Container();
+                      } else
+                        return GridViewCard(querySnapshot.docs[index]);
+                    })),
+              ),
+            ]);
           }),
       floatingActionButton: UnicornDialer(
           backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
@@ -138,7 +145,7 @@ class _analyze extends State<analyze> {
   }
 
   Future imageClassification(File image) async {
-    // Run tensorflowlite image classification model on the image
+    // Run tensorflow lite image classification model on the image
     final List results = await Tflite.runModelOnImage(
       path: image.path,
       numResults: 6,
@@ -150,60 +157,124 @@ class _analyze extends State<analyze> {
       _results = results;
       _image = image;
     });
+    uploadToFirebase(_image);
+  }
+
+  Future<void> uploadToFirebase(File image) async {
+    String docID = Timestamp.now().seconds.toString();
+    firebase_storage.UploadTask uploadTask;
+    String _label = _results.first['label'];
+
+    String path = "user/" + "$UserEmail/" + "$docID/";
+    firebase_storage.Reference ref =
+        firebase_storage.FirebaseStorage.instance.ref().child(path);
+
+    if (kIsWeb) {
+      uploadTask = ref.putData(await image.readAsBytes());
+    } else {
+      uploadTask = ref.putFile(File(image.path));
+    }
+
+    String downloadURL;
+
+    Map<String, dynamic> data = {
+      'type': _results.first["label"],
+      'season': "?",
+      "color": "?",
+      "imageURL": downloadURL,
+    };
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(UserEmail)
+        .collection("closet")
+        .doc(docID)
+        .set(data);
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(UserEmail)
+        .collection('closet')
+        .doc('clothes')
+        .get()
+        .then((DocumentSnapshot docs) {
+      if (docs.exists) {
+        try {
+          double num = docs[_label];
+          updateDoc(_label, num);
+        } catch (e) {
+          createDoc(_label);
+        }
+      } else {
+        Map<String, dynamic> data = {
+          "$_label": 1.0,
+        };
+        FirebaseFirestore.instance
+            .collection('user')
+            .doc(UserEmail)
+            .collection('closet')
+            .doc("clothes")
+            .set(data);
+      }
+    });
+  }
+
+  void updateDoc(String label, double num) async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(UserEmail)
+        .collection("closet")
+        .doc("clothes")
+        .update({
+      "$label": num + 1.0,
+    });
+  }
+
+  void createDoc(String label) async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(UserEmail)
+        .collection("closet")
+        .doc("clothes")
+        .update({
+      "$label": 1.0,
+    });
   }
 }
 
-class Temp extends StatelessWidget {
+class GridViewCard extends StatelessWidget {
   final DocumentSnapshot snapshot;
 
-  Temp(this.snapshot);
+  GridViewCard(this.snapshot);
 
-  Map<String, dynamic> get temp {
+  // ignore: non_constant_identifier_names
+  Map<String, dynamic> get FBdata {
     return snapshot.data();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(child: Text("$temp")),
-        if (_image != null)
-          Expanded(
-              child: Container(
-                  margin: EdgeInsets.all(10), child: Image.file(_image)))
-        else
-          Container(
-            margin: EdgeInsets.all(40),
-            child: Opacity(
-              opacity: 0.6,
-              child: Center(
-                child: Text('No Image Selected!'),
-              ),
-            ),
-          ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: _results != null
-                  ? _results.map((result) {
-                      return Card(
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          child: Text(
-                            "${result["label"]} -  ${result["confidence"].toStringAsFixed(2)}",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      );
-                    }).toList()
-                  : [],
-            ),
-          ),
-        ),
-      ],
+    return Card(
+      child: Text("$FBdata"),
+      // child: Image.network()
+    );
+  }
+}
+
+class makePieChart extends StatelessWidget {
+  final DocumentSnapshot snapshot;
+  Map<String, double> PieChartData = {};
+
+  makePieChart(this.snapshot) {
+    snapshot.data().forEach((key, value) {
+      PieChartData["$key"] = value.toDouble();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PieChart(
+      dataMap: PieChartData,
     );
   }
 }
