@@ -90,24 +90,10 @@ class _analyze extends State<analyze> {
             }
 
             QuerySnapshot querySnapshot = stream.data;
+            DocumentSnapshot ds = querySnapshot.docs[querySnapshot.size - 1];
             return Column(children: [
-              // ListView(
-              //     children: List.generate(querySnapshot.size, (index) {
-              //   if (querySnapshot.docs[index].id == "clothes") {
-              //     return makePieChart(querySnapshot.docs[index]);
-              //   } else
-              //     return Container();
-              // })),
-              Expanded(
-                child: GridView.count(
-                    crossAxisCount: 4,
-                    children: List.generate(querySnapshot.size, (index) {
-                      if (querySnapshot.docs[index].id == "clothes") {
-                        return Container();
-                      } else
-                        return GridViewCard(querySnapshot.docs[index]);
-                    })),
-              ),
+              makePieChart(ds),
+              makeImageList(querySnapshot),
             ]);
           }),
       floatingActionButton: UnicornDialer(
@@ -175,7 +161,11 @@ class _analyze extends State<analyze> {
       uploadTask = ref.putFile(File(image.path));
     }
 
-    String downloadURL;
+    await uploadTask.whenComplete(() => null);
+    String downloadURL = await ref.getDownloadURL();
+    // print("=============downloadURL===============");
+    // print(downloadURL);
+    // print("=============downloadURL===============");
 
     Map<String, dynamic> data = {
       'type': _results.first["label"],
@@ -242,25 +232,6 @@ class _analyze extends State<analyze> {
   }
 }
 
-class GridViewCard extends StatelessWidget {
-  final DocumentSnapshot snapshot;
-
-  GridViewCard(this.snapshot);
-
-  // ignore: non_constant_identifier_names
-  Map<String, dynamic> get FBdata {
-    return snapshot.data();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Text("$FBdata"),
-      // child: Image.network()
-    );
-  }
-}
-
 class makePieChart extends StatelessWidget {
   final DocumentSnapshot snapshot;
   Map<String, double> PieChartData = {};
@@ -276,5 +247,49 @@ class makePieChart extends StatelessWidget {
     return PieChart(
       dataMap: PieChartData,
     );
+  }
+}
+
+class makeImageList extends StatelessWidget {
+  final QuerySnapshot snapshot;
+
+  makeImageList(this.snapshot);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GridView.count(
+          crossAxisCount: 4,
+          children: List.generate(snapshot.size, (index) {
+            if (snapshot.docs[index].id == "clothes") {
+              return Container();
+            } else
+              return GridViewCard(snapshot.docs[index]);
+          })),
+    );
+  }
+}
+
+class GridViewCard extends StatelessWidget {
+  final DocumentSnapshot snapshot;
+
+  GridViewCard(this.snapshot);
+
+  // ignore: non_constant_identifier_names
+  Map<String, dynamic> get FBdata {
+    return snapshot.data();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return snapshot.exists
+        ? Card(
+            // child: Text("$FBdata"),
+            child: Image.network(
+              FBdata['imageURL'],
+              fit: BoxFit.fitWidth,
+            ),
+          )
+        : Card();
   }
 }
