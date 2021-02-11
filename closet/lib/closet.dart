@@ -182,7 +182,7 @@ class _closetState extends State<closet> {
                     ),
                   ],
                 ),
-                floatingActionButton: FancyFab(),
+                // floatingActionButton: FancyFab(),
               ),
     );
   }

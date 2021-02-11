@@ -1,5 +1,6 @@
 import 'package:closet/analysis/analyze.dart';
 import 'package:closet/myPage.dart';
+import 'package:closet/weatherPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
