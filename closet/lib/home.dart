@@ -11,6 +11,7 @@ import 'theme/darkmode.dart';
 import 'calendar.dart';
 import 'my.dart';
 import 'analysis/uploadExample.dart';
+import 'package:closet/analysis/test.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({this.email});
@@ -28,8 +29,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     List<Widget> _children = [
       closet(),
-      analyze(),
-      // uploadExample(),
+      loadmoretest(),
+      // analyze(),
+      // request(),
       Calendar(),
       My(),
     ];

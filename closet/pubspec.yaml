@@ -50,6 +50,7 @@ dependencies:
   pie_chart: ^4.0.1
   backdrop: ^0.4.7
   intl: ^0.16.1
+  loadmore: ^1.0.4
   flutter:
     sdk: flutter
 
