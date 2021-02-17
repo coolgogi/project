@@ -50,7 +50,9 @@ dependencies:
   pie_chart: ^4.0.1
   backdrop: ^0.4.7
   intl: ^0.16.1
-  loadmore: ^1.0.4
+  syncfusion_flutter_charts: ^18.4.41
+  swipeable_page_route: ^0.1.6
+
   flutter:
     sdk: flutter
 
@@ -119,10 +121,22 @@ flutter:
     - assets/ml/mobilenet_v1_1.0_224.tflite
     - assets/weather/sunny.png
     - assets/weather/cloudy.png
+    - assets/weather/cloudy_little.png
+    - assets/weather/cloudy_little_night.png
     - assets/weather/moon.png
     - assets/weather/rain.png
+    - assets/weather/rain_night.png
     - assets/weather/snow.png
+    - assets/weather/background_rain.png
     - assets/weather/background_snow.png
+    - assets/weather/background_sunny.png
+    - assets/weather/background_night.png
+    - assets/weather/background_cloudy.png
+    - assets/weather/detail_sunny.png
+    - assets/weather/detail_cloudy.png
+    - assets/weather/detail_night.png
+    - assets/weather/detail_rain.png
+    - assets/cloy.png
 
 
 

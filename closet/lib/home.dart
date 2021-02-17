@@ -1,5 +1,6 @@
 import 'package:closet/analysis/analyze.dart';
 import 'package:closet/myPage.dart';
+import 'package:closet/weatherPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,8 +30,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     List<Widget> _children = [
       closet(),
-      loadmoretest(),
-      // analyze(),
+      analyze(),
       // request(),
       Calendar(),
       My(),

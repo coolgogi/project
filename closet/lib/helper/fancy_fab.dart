@@ -76,6 +76,7 @@ class _FancyFabState extends State<FancyFab>
   Widget image() {
     return Container(
       child: FloatingActionButton(
+        heroTag: "btn1",
         backgroundColor: Theme.of(context).colorScheme.secondary,
         hoverColor: Theme.of(context).colorScheme.onSecondary,
         onPressed: null,
