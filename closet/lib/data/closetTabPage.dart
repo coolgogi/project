@@ -1,5 +1,6 @@
 import 'package:closet/data/weather.dart';
 import 'package:flutter/material.dart';
+import '../weatherPage.dart';
 
 class cody extends StatelessWidget {
   @override
@@ -11,7 +12,13 @@ class cody extends StatelessWidget {
         Container(
           child: SizedBox(
             height: size.height * 0.129,
-            child: weatherBar(),
+            child: GestureDetector(
+                  onTap: () {Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => weatherPage())
+                  );
+                },
+                child: weatherBar(),
+            ),
           ),
         ),
         GridView.count(

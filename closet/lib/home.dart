@@ -1,5 +1,6 @@
 import 'package:closet/analysis/analyze.dart';
 import 'package:closet/myPage.dart';
+import 'package:closet/weatherPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'theme/darkmode.dart';
 import 'calendar.dart';
 import 'my.dart';
 import 'analysis/uploadExample.dart';
+import 'package:closet/analysis/test.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({this.email});
@@ -29,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     List<Widget> _children = [
       closet(),
       analyze(),
-      // uploadExample(),
+      // request(),
       Calendar(),
       My(),
     ];

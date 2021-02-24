@@ -14,7 +14,7 @@ void main() async {
 }
 
 class Splash extends StatelessWidget {
-  @override
+  @override 
   Widget build(BuildContext context)  {
     return StreamBuilder<User>(
         stream: FirebaseAuth.instance.onAuthStateChanged,

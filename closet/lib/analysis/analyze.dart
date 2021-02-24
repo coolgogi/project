@@ -90,13 +90,20 @@ class _analyze extends State<analyze> {
             }
 
             QuerySnapshot querySnapshot = stream.data;
-            DocumentSnapshot ds = querySnapshot.docs[querySnapshot.size - 1];
-            return Column(children: [
-              leftSideText("색상 분석"),
-              makePieChart(ds),
-              leftSideText("옷 종류 분석"),
-              makeImageList(querySnapshot),
-            ]);
+            if (querySnapshot.size == 0) {
+              return Container(child: Text("No Clothes"));
+            } else {
+              DocumentSnapshot ds = querySnapshot.docs[querySnapshot.size - 1];
+              return Column(children: <Widget>[
+                leftSideText("색상 분석"),
+                makePieChart(ds),
+                leftSideText("옷 종류 분석"),
+                makeImageList(querySnapshot),
+                // Expanded(
+                //   child: makeClothesButton(),
+                // ),
+              ]);
+            }
           }),
       floatingActionButton: UnicornDialer(
           backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
@@ -165,9 +172,6 @@ class _analyze extends State<analyze> {
 
     await uploadTask.whenComplete(() => null);
     String downloadURL = await ref.getDownloadURL();
-    // print("=============downloadURL===============");
-    // print(downloadURL);
-    // print("=============downloadURL===============");
 
     Map<String, dynamic> data = {
       'type': _results.first["label"],
@@ -246,12 +250,14 @@ class makePieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: PieChart(
-        dataMap: PieChartData,
-        chartType: ChartType.ring,
+    return Expanded(
+      child: Container(
+        child: PieChart(
+          dataMap: PieChartData,
+          chartType: ChartType.ring,
+        ),
+        padding: EdgeInsets.all(16.0),
       ),
-      padding: EdgeInsets.all(16.0),
     );
   }
 }
@@ -266,6 +272,7 @@ class makeImageList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: GridView.count(
+          shrinkWrap: true,
           crossAxisCount: 4,
           children: List.generate(snapshot.size, (index) {
             if (snapshot.docs[index].id == "clothes") {
@@ -312,5 +319,24 @@ class leftSideText extends StatelessWidget {
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.headline6),
     ]);
+  }
+}
+
+class makeClothesButton extends StatelessWidget {
+  makeClothesButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        children: [
+          ElevatedButton(onPressed: () {}, child: Text("title")),
+          Card(child: Text("Card1")),
+          Card(child: Text("Card2")),
+          Card(child: Text("Card3")),
+          Card(child: Text("Card4")),
+          Card(child: Text("Card5")),
+        ]);
   }
 }
