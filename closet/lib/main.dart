@@ -19,6 +19,9 @@ class Splash extends StatelessWidget {
     return StreamBuilder<User>(
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (context, snapshot) {
+          if(snapshot.hasError){
+            return Center(child:Text("Firebase load fail"));
+          }
           if (snapshot.data == null) {
             return ChangeNotifierProvider<JoinOrLogin>.value(
               value: JoinOrLogin(),

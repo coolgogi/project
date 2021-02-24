@@ -63,6 +63,14 @@
        </activity>
 <!--       <meta-data android:name="io.flutter.network-policy"-->
 <!--           android:resource="@xml/network_security_config"/>-->
+       <activity android:name="com.linusu.flutter_web_auth.CallbackActivity" >
+           <intent-filter android:label="flutter_web_auth">
+               <action android:name="android.intent.action.VIEW" />
+               <category android:name="android.intent.category.DEFAULT" />
+               <category android:name="android.intent.category.BROWSABLE" />
+               <data android:scheme="webauthcallback" />
+           </intent-filter>
+       </activity>
 
    </application>
 </manifest>

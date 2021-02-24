@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'login/signin.dart';
+
 
 class My extends StatefulWidget{
   @override
@@ -59,6 +61,9 @@ class _MyState extends State<My>{
             ),
             ListTile(
               title: Text('실험실'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage()));
+              },
             ),
             ListTile(
               title: Text('설정'),
