@@ -12,6 +12,7 @@ import 'theme/darkmode.dart';
 import 'calendar.dart';
 import 'my.dart';
 import 'analysis/uploadExample.dart';
+import 'codi.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({this.email});
@@ -28,10 +29,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _children = [
+      codi(),
       closet(),
       analyze(),
       // uploadExample(),
-      Calendar(),
+      // Calendar(),
       My(),
     ];
     return ChangeNotifierProvider(
@@ -80,13 +82,14 @@ class _HomePageState extends State<HomePage> {
                 items: [
                   BottomNavigationBarItem(
                       title: Text('드레스룸'),
-                      //icon: Icon(Icons.home_outlined)
+                      icon: Icon(Icons.home_outlined)),
+                  BottomNavigationBarItem(
+                      title: Text('옷장'),
+                      // icon: ImageIcon(AssetImage('assets/closet.png'), size: 24,)
                       icon: Icon(Icons.checkroom_outlined)),
                   BottomNavigationBarItem(
                       title: Text('옷장 분석'),
                       icon: Icon(Icons.pie_chart_outlined)),
-                  BottomNavigationBarItem(
-                      title: Text('달력'), icon: Icon(Icons.date_range_outlined)),
                   BottomNavigationBarItem(
                       title: Text('마이 페이지'), icon: Icon(Icons.perm_identity)),
                 ],

@@ -1,14 +1,23 @@
+import 'dart:io';
+
 import 'package:closet/data/weather.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_widgets/animated_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:tflite/tflite.dart';
+import 'package:unicorndial/unicorndial.dart';
 import 'helper/fancy_fab.dart';
 import 'helper/bloc.dart';
 import 'data/closetTabPage.dart';
-import 'location.dart';
+import 'helper/tabCategory.dart';
+import 'data/location.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 // class closet extends StatefulWidget {
 //   @override
@@ -90,6 +99,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:weather/weather.dart';
 import 'data/weather.dart';
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+// ignore: non_constant_identifier_names
+final String UserEmail = _auth.currentUser.email;
+String nickname;
+
 
 class closet extends StatefulWidget {
   // closet({@required this.weatherData});
@@ -100,11 +114,159 @@ class closet extends StatefulWidget {
   _closetState createState() => _closetState();
 }
 
+File _image;
+List _results;
+String category = 'outers';
+
 class _closetState extends State<closet> {
   int temperature;
   Icon weatherDisplayIcon;
   AssetImage backgroundImage;
 
+  final List<String> _tabCategory = <String>[];
+  final Set<String> _selectedCategory = Set<String>();
+
+  Future loadModel() async {
+    Tflite.close();
+    String res;
+    res = await Tflite.loadModel(
+      model: "assets/ml/mobilenet_v1_1.0_224.tflite",
+      labels: "assets/ml/mobilenet_v1_1.0_224.txt",
+    );
+    print(res);
+  }
+
+  Future pickAnImageFromGallery() async {
+    // ignore: deprecated_member_use
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    print(category);
+    // Perform image classification on the selected image.
+    // imageClassification(image);
+    uploadToFirebase(image);
+  }
+
+  Future pickAnImageFromCamera() async {
+    // pick image and...
+    // ignore: deprecated_member_use
+    File image = await ImagePicker.pickImage(source: ImageSource.camera);
+    // Perform image classification on the selected image.
+    // imageClassification(image);
+    uploadToFirebase(image);
+  }
+
+  // Future imageClassification(File image) async {
+  //   // Run tensorflow lite image classification model on the image
+  //   final List results = await Tflite.runModelOnImage(
+  //     path: image.path,
+  //     numResults: 6,
+  //     threshold: 0.05,
+  //     imageMean: 127.5,
+  //     imageStd: 127.5,
+  //   );
+  //   setState(() {
+  //     _results = results;
+  //     _image = image;
+  //   });
+  //   uploadToFirebase(_image);
+  // }
+
+  Future<void> uploadToFirebase(File image) async {
+    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2');
+    String docID = Timestamp.now().seconds.toString();
+    firebase_storage.UploadTask uploadTask;
+    // String _label = _results.first['label'];
+
+    String path = "user/" + "$UserEmail/" + "closet/clothes/" + "$category/" + "$docID";
+    firebase_storage.Reference ref =
+    firebase_storage.FirebaseStorage.instance.ref().child(path);
+    print('ref : $ref');
+
+    if (kIsWeb) {
+      print("asdf");
+      uploadTask = ref.putData(await image.readAsBytes());
+    } else {
+      print("aaaaaaaaaaaaaaaaa");
+      print("aaaaaaaaaaaaaaaaa : ${image.path}");
+      uploadTask = ref.putFile(File(image.path));
+    }
+
+    await uploadTask.whenComplete(() => null);
+    String downloadURL = await ref.getDownloadURL();
+    print('downloadURL : $downloadURL');
+    // print("=============downloadURL===============");
+    // print(downloadURL);
+    // print("=============downloadURL===============");
+
+    Map<String, dynamic> data = {
+      // 'type': _results.first["label"],
+      'category': category,
+      'season': "?",
+      "color": "?",
+      "imageURL": downloadURL,
+    };
+
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(UserEmail)
+        .collection('closet')
+        .doc('clothes')
+        .collection(category)
+        .doc(docID)
+        .set(data);
+
+    // FirebaseFirestore.instance
+    //     .collection('user')
+    //     .doc(UserEmail)
+    //     .collection('closet')
+    //     .doc('clothes')
+    //     .get()
+    //     .then((DocumentSnapshot docs) {
+    //   if (docs.exists) {
+    //     try {
+    //       double num = docs[_label];
+    //       updateDoc(_label, num);
+    //     } catch (e) {
+    //       createDoc(_label);
+    //     }
+    //   } else {
+    //     Map<String, dynamic> data = {
+    //       "$_label": 1.0,
+    //     };
+    //     FirebaseFirestore.instance
+    //         .collection('user')
+    //         .doc(UserEmail)
+    //         .collection('closet')
+    //         .doc("clothes")
+    //         .set(data);
+    //   }
+    // });
+  }
+
+  void updateDoc(String label, double num) async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(UserEmail)
+        .collection('closet')
+        .doc('clothes')
+        .collection('outers')
+        .doc('number')
+        .update({
+      "$label": num + 1.0,
+    });
+  }
+
+  void createDoc(String label) async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(UserEmail)
+        .collection('closet')
+        .doc('clothes')
+        .collection('outers')
+        .doc('number')
+        .update({
+      "$label": 1.0,
+    });
+  }
   // void updateWeatherInfo(WeatherData weatherData) {
   //   setState(() {
   //     temperature = weatherData.currentTemperature.round();
@@ -122,71 +284,124 @@ class _closetState extends State<closet> {
   //   WeatherData().getCurrentTemperature();
   // }
 
-
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    // weatherBar();
-    // weather();
+    final Size size = MediaQuery
+        .of(context)
+        .size;
+
+    List<UnicornButton> childButtons = List<UnicornButton>();
+    childButtons.add(UnicornButton(
+        hasLabel: true,
+        labelText: "Gallery",
+        currentButton: FloatingActionButton(
+            heroTag: "Gallery",
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            mini: true,
+            child: Icon(Icons.image),
+            onPressed: pickAnImageFromGallery)));
+
+    childButtons.add(UnicornButton(
+        hasLabel: true,
+        labelText: "Camera",
+        currentButton: FloatingActionButton(
+          heroTag: "Camera",
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          mini: true,
+          child: Icon(Icons.photo_camera),
+          onPressed: pickAnImageFromCamera,
+        )));
+
+    final List<Tab> myTabs = <Tab>[
+      Tab(text: '아우터'),
+      Tab(text: '상의'),
+      Tab(text: '하의'),
+      Tab(text: '신발'),
+      Tab(text: '악세사리'),
+    ];
 
     return DefaultTabController(
-        length: 6,
-        child: Scaffold(
-                appBar: PreferredSize(
-                  preferredSize: Size.fromHeight(size.height * 0.14),
-                  child: AppBar(
-                    title: Text(
-                      'CloDay',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    actions: [
-                      Container(
-                        width: size.width * 0.15,
-                        child: Icon(
-                            Icons.notifications_none_outlined,
-                            color:Theme.of(context).colorScheme.onSurface
-                        ),
-                      ),
-                    ],
-                    bottom: TabBar(
-                      isScrollable: true,
-                      indicatorColor: Theme.of(context).colorScheme.primary,
-                      labelColor: Theme.of(context).colorScheme.primary,
-                      unselectedLabelColor: Theme.of(context).colorScheme.onPrimary,
-                      labelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
-                      unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
-                      tabs: [
-                        Tab(text: '코디'),
-                        Tab(text: '아우터'),
-                        Tab(text: '상의'),
-                        Tab(text: '하의'),
-                        Tab(text: '신발'),
-                        Tab(text: '악세사리'),
-                      ],
-                    ),
-                  ),
+      length: 5,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(size.height * 0.14),
+          child: AppBar(
+            title: Text(
+              'CloDay',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline5,
+            ),
+            actions: [
+              Container(
+                width: size.width * 0.15,
+                child: Icon(
+                    Icons.today_outlined,
+                    color: Theme
+                        .of(context)
+                        .colorScheme
+                        .onSurface
                 ),
-                body: Column(
-                  children: [
-                    Expanded(
-                      child: TabBarView(
-                        children: [
-                          cody(),
-                          outers(),
-                          tops(),
-                          pants(),
-                          shoes(),
-                          accessories()
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                // floatingActionButton: FancyFab(),
               ),
+            ],
+            bottom: TabBar(
+              onTap: (index) {
+                index == 0? category = 'outers'
+                    : index == 1? category = 'tops'
+                      : index == 2? category = 'pants'
+                        : index == 3? category = 'shoes'
+                          : category = 'accessories';
+                print('asdgdfhjdfhsdtsghfdshjfsdhdjeysheshjew : $category');
+              },
+              isScrollable: true,
+              indicatorColor: Theme
+                  .of(context)
+                  .colorScheme
+                  .primary,
+              labelColor: Theme
+                  .of(context)
+                  .colorScheme
+                  .primary,
+              unselectedLabelColor: Theme
+                  .of(context)
+                  .colorScheme
+                  .onPrimary,
+              labelStyle: TextStyle(
+                  fontSize: 16.0, fontWeight: FontWeight.w600),
+              unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+              tabs: myTabs,
+            ),
+          ),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: TabBarView(
+                children: [
+                  outers(),
+                  tops(),
+                  pants(),
+                  shoes(),
+                  accessories()
+                ],
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: UnicornDialer(
+            backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
+            parentButtonBackground: Theme.of(context).colorScheme.secondary,
+            orientation: UnicornOrientation.VERTICAL,
+            parentButton: Icon(Icons.add),
+            childButtons: childButtons),
+        // floatingActionButton: FancyFab(),
+      ),
     );
   }
 }
+
+
 
 
 

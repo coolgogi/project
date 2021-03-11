@@ -52,6 +52,8 @@ dependencies:
   intl: ^0.16.1
   syncfusion_flutter_charts: ^18.4.41
   swipeable_page_route: ^0.1.6
+  async: ^2.4.2
+
 
   flutter:
     sdk: flutter
@@ -80,6 +82,7 @@ flutter_icons:
     - "assets/weather/moon.png"
     - 'assets/weather/snow.png'
     - 'assets/weather/rain.png'
+    - 'assets/closet.png'
 
 
 # For information on the generic Dart part of this file, see the
@@ -121,8 +124,10 @@ flutter:
     - assets/ml/mobilenet_v1_1.0_224.tflite
     - assets/weather/sunny.png
     - assets/weather/cloudy.png
-    - assets/weather/cloudy_little.png
-    - assets/weather/cloudy_little_night.png
+    - assets/weather/few_clouds.png
+    - assets/weather/few_clouds_night.png
+    - assets/weather/broken_clouds.png
+    - assets/weather/cloudy_night.png
     - assets/weather/moon.png
     - assets/weather/rain.png
     - assets/weather/rain_night.png
@@ -136,7 +141,28 @@ flutter:
     - assets/weather/detail_cloudy.png
     - assets/weather/detail_night.png
     - assets/weather/detail_rain.png
+    - assets/weather/feelLike.png
+    - assets/weather/humidityLevel/humidity1.png
+    - assets/weather/humidityLevel/humidity2.png
+    - assets/weather/humidityLevel/humidity3.png
+    - assets/weather/humidityLevel/humidity4.png
+    - assets/weather/humidityLevel/humidity5.png
+    - assets/weather/humidityLevel/humidity6.png
+    - assets/weather/humidityLevel/humidity7.png
+    - assets/weather/humidityLevel/humidity8.png
+    - assets/weather/humidityLevel/humidity9.png
+    - assets/weather/humidityLevel/humidity10.png
+    - assets/weather/dustLevel/dust_good.png
+    - assets/weather/dustLevel/dust_notBad.png
+    - assets/weather/dustLevel/dust_bad.png
+    - assets/weather/dustLevel/dust_worst.png
+    - assets/weather/feelLike/feelLike_high.png
+    - assets/weather/feelLike/feelLike_middle.png
+    - assets/weather/feelLike/feelLike_low.png
+    - assets/weather/UV.png
+    - assets/weather/umbrella.png
     - assets/cloy.png
+    - assets/closet.png
 
 
 
