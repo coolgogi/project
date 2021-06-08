@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b1ef17a6-8f7c-4311-91a9-61238c580851" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/closet/integration_test/app_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/closet/integration_test/app_test.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/closet/lib/closet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/closet/lib/closet.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/closet/lib/codi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/closet/lib/codi.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/closet/lib/data/bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/closet/lib/data/bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/closet/lib/helper/tabCategory.dart" beforeDir="false" afterPath="$PROJECT_DIR$/closet/lib/helper/tabCategory.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/closet/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/closet/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

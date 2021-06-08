@@ -244,7 +244,7 @@ class _codiState extends State<codi> {
                               onTap: () {
                                 Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (context) => tabCategoryPage()));
+                                        builder: (context) => TabCategoryPage()));
                               },
                             ),
                           ),

@@ -318,6 +318,7 @@ class _closetState extends State<closet> {
       Tab(text: '하의'),
       Tab(text: '신발'),
       Tab(text: '악세사리'),
+      // Tab()
     ];
 
     return DefaultTabController(

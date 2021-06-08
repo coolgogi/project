@@ -1,13 +1,18 @@
 import 'dart:async';
+import 'dart:async';
 
 class Bloc {
   Set <String> saved = Set<String>();
 
-  final _savedController = StreamController<Set<String>>();
+  final _savedController = StreamController<Set<String>>.broadcast();
 
   get savedStream => _savedController.stream;
 
+  get addCurrentSaved => _savedController.sink.add(saved);
+
   addToOrRemoveFromSavedList(String item) {
+    print('saved: $saved');
+    print('saved.contains(item): ${saved.contains(item)}');
     if(saved.contains(item)) {
       saved.remove(item);
     } else {

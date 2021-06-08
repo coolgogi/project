@@ -41,7 +41,9 @@ class _weatherPageState extends State<weatherPage> {
   User _user;
   FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   String _downloadURL;
-  String path = "user/" + "$UserEmail/1613145603";
+  String _downloadURL2; // <-- 지울 것
+  String path = "user/" + "$UserEmail/1ba64621c29b461aab9a7dc495e7a178.jpg";
+  String path2 = "user/" + "$UserEmail/74c33bd4028dc12361ff8a2457eed71f.jpg"; // <-- 이것도 지울것
   String uvData;
   var uvLevel;
   String dustData;
@@ -59,6 +61,8 @@ class _weatherPageState extends State<weatherPage> {
     });
     Reference ref = FirebaseStorage.instance.ref().child(path);
     _downloadURL = await ref.getDownloadURL();
+    Reference ref2 = FirebaseStorage.instance.ref().child(path2);
+    _downloadURL2 = await ref2.getDownloadURL();
     print("What?!: $_downloadURL");
     print(_firebaseStorage.ref().getDownloadURL());
   }
@@ -216,7 +220,7 @@ class _weatherPageState extends State<weatherPage> {
             ),
           ),
           subTitle("$nickname 님 오늘은 이런 코니 어때요?", size),
-          codiRecommend(size),
+          // codiRecommend(size),
 
           subTitle("시간대별 날씨", size),
           forecastChart(size),
@@ -462,7 +466,7 @@ class _weatherPageState extends State<weatherPage> {
             image: NetworkImage(_downloadURL)),
         Image(
             width: size.width * 0.47,
-            image: NetworkImage(_downloadURL)),
+            image: NetworkImage(_downloadURL2)),
       ],
     );
   }
